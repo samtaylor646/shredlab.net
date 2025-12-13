@@ -1,0 +1,36 @@
+{
+	"name": "Shred Lab QMS (PHP)",
+	"image": "mcr.microsoft.com/devcontainers/php:1-8.2-bookworm",
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils:2": {
+			"installZsh": true,
+			"username": "vscode",
+			"upgradePackages": true
+		},
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {
+			"version": "latest",
+			"enableNonRootDocker": "true",
+			"moby": "true"
+		}
+	},
+	"customizations": {
+		"vscode": {
+			"settings": {
+				"php.validate.executablePath": "/usr/local/bin/php"
+			},
+			"extensions": [
+				"bmewburn.vscode-intelephense-client",
+				"xdebug.php-debug",
+				"RooVeterinaryInc.roo-cline"
+			]
+		}
+	},
+	"forwardPorts": [8000],
+	"portsAttributes": {
+		"8000": {
+			"label": "Application",
+			"onAutoForward": "notify"
+		}
+	},
+	"postCreateCommand": "sudo chmod -R 777 quotes assets/data && echo 'Project ready. Run `php -S 0.0.0.0:8000` to serve.'"
+}
