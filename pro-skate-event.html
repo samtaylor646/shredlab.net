@@ -1,0 +1,1085 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Event Planning - Shred Lab</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+  <style>
+    /* Tab Navigation */
+    .tab-nav {
+      display: flex;
+      gap: 0;
+      margin-bottom: 0;
+      border-bottom: 2px solid var(--border);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      position: sticky;
+      top: 80px;
+      background: var(--bg);
+      z-index: 50;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .tab-nav.scrolled {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 20px 32px;
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      position: relative;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+      letter-spacing: 0.02em;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+    }
+
+    .tab-btn.active {
+      color: var(--text);
+    }
+
+    .tab-btn::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--text);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .tab-btn.active::after {
+      transform: scaleX(1);
+    }
+
+    /* Tab Content */
+    .tab-content {
+      display: none;
+      padding: 40px 0;
+      min-height: 400px;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Card-based data display */
+    .data-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      opacity: 0;
+    }
+
+    .data-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      padding: 24px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .data-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    .data-card-header {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+
+    .data-card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .data-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .data-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--muted);
+    }
+
+    .data-value {
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .data-value strong {
+      font-weight: 700;
+    }
+
+    /* Cost highlight */
+    .cost-badge {
+      display: inline-block;
+      background: rgba(249, 115, 22, 0.15);
+      color: var(--text);
+      padding: 6px 12px;
+      font-weight: 700;
+      font-size: 16px;
+      margin-top: 4px;
+    }
+
+    /* Tier packages - special layout */
+    .tier-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      opacity: 0;
+    }
+
+    .tier-card {
+      background: var(--card-bg);
+      border: 2px solid var(--border);
+      padding: 32px 28px;
+      transition: transform 0.3s ease, border-color 0.3s ease;
+      position: relative;
+    }
+
+    .tier-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--text);
+    }
+
+    .tier-badge {
+      display: inline-block;
+      background: var(--text);
+      color: var(--bg);
+      padding: 4px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .tier-name {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .tier-price {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tier-details {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tier-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .tier-section-label {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+
+    .tier-section-value {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+    }
+
+    /* Compact list for planning tasks */
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      opacity: 0;
+    }
+
+    .task-item {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      padding: 20px 24px;
+      transition: background 0.2s ease;
+    }
+
+    .task-item:first-child {
+      border-top: 1px solid var(--border);
+    }
+
+    .task-item:last-child {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .task-item:hover {
+      background: var(--bg);
+    }
+
+    .task-category {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    .task-description {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 8px;
+      line-height: 1.5;
+    }
+
+    .task-deliverable {
+      font-size: 13px;
+      color: var(--text);
+      padding: 8px 12px;
+      background: var(--bg);
+      border-left: 3px solid var(--text);
+    }
+
+    .task-deliverable::before {
+      content: '→ ';
+      font-weight: 700;
+    }
+
+    /* Section headers */
+    .table-section-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 40px 0 24px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .table-intro {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      line-height: 1.6;
+    }
+
+    /* Total summary box */
+    .total-box {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      padding: 24px;
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .total-label {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .total-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      background: rgba(249, 115, 22, 0.15);
+      padding: 8px 16px;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 768px) {
+      .tab-btn {
+        padding: 16px 20px;
+        font-size: 14px;
+      }
+
+      .data-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tier-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .data-card,
+      .tier-card {
+        padding: 20px;
+      }
+
+      .tier-name {
+        font-size: 20px;
+      }
+
+      .tier-price {
+        font-size: 18px;
+      }
+
+      .task-item {
+        padding: 16px 20px;
+      }
+
+      .total-box {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+      }
+
+      .table-section-title {
+        font-size: 20px;
+        margin: 32px 0 20px 0;
+      }
+    }
+  </style>
+</head>
+<body class="theme-root" data-theme="light">
+
+  <!-- Header -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Shred Lab Home">
+        <img src="assets/img/shred-icon-blk.png" alt="Shred Lab" class="brand-logo">
+        Shred Lab
+      </a>
+
+      <div class="controls">
+        <nav class="global-nav" aria-label="Primary">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link" href="services.html">Services</a>
+          <a class="nav-link active" href="events.html">Events</a>
+          <a class="nav-link" href="#">Contact</a>
+        </nav>
+
+        <button id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+          <svg class="close-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="site-main" id="main" role="main">
+    <div class="container">
+
+      <!-- Back button -->
+      <div class="back-nav">
+        <a href="services.html" class="back-link">
+          <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+          Back to Services
+        </a>
+      </div>
+
+      <!-- Service Detail -->
+      <article class="service-detail">
+        <!-- Hero -->
+        <div class="hero">
+          <img class="hero-img" src="assets/img/joakim-honkasalo-6D75PWzBkmQ-unsplash.jpg" alt="Event Planning">
+          <div class="hero-overlay">
+            <span class="card-pill">Events</span>
+          </div>
+        </div>
+
+        <!-- Header -->
+        <header class="page-header">
+          <h1 class="page-title">Event Planning Blueprint</h1>
+          
+          <div class="meta-grid">
+            <div class="meta-item">
+              <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+              <div class="meta-text">
+                <span class="meta-label">Service Type</span>
+                <span class="meta-value">3-Phase System</span>
+              </div>
+            </div>
+
+            <div class="meta-item">
+              <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              <div class="meta-text">
+                <span class="meta-label">Timeline</span>
+                <span class="meta-value">3-4 Months</span>
+              </div>
+            </div>
+
+            <div class="meta-item">
+              <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              <div class="meta-text">
+                <span class="meta-label">Scope</span>
+                <span class="meta-value">Full Management</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Intro -->
+        <div class="content-description" style="margin-bottom: 60px;">
+          <p>End-to-end management for professional skateboard contests and events. We handle logistics, safety, staffing, and execution so you can focus on creating an unforgettable experience.</p>
+        </div>
+
+        <!-- Tab Navigation -->
+        <nav class="tab-nav" role="tablist">
+          <button class="tab-btn active" data-tab="planning" role="tab" aria-selected="true">
+            1. Planning & Tasks
+          </button>
+          <button class="tab-btn" data-tab="costs" role="tab" aria-selected="false">
+            2. Cost Breakdown
+          </button>
+          <button class="tab-btn" data-tab="staffing" role="tab" aria-selected="false">
+            3. Staffing Matrix
+          </button>
+          <button class="tab-btn" data-tab="promo" role="tab" aria-selected="false">
+            4. Promo Packages
+          </button>
+        </nav>
+
+        <!-- Tab Content -->
+        <div class="tab-panels">
+          
+          <!-- Tab 1: Planning -->
+          <div class="tab-content active" id="planning" role="tabpanel">
+            <h2 class="table-section-title">Phase 1: Pre-Event Planning & Logistics</h2>
+            <p class="table-intro">The foundation for a successful event. We deliver a complete operational plan covering all critical pre-event tasks.</p>
+            
+            <div class="task-list">
+              <div class="task-item">
+                <div class="task-category">Concept & Scope</div>
+                <div class="task-description">Define event format (Street, Vert, etc.), divisions, rules, and judging criteria.</div>
+                <div class="task-deliverable">Signed Service Agreement & Project Scope Document</div>
+              </div>
+
+              <div class="task-item">
+                <div class="task-category">Budget & Sponsorship</div>
+                <div class="task-description">Develop detailed budget, create sponsorship deck, and secure initial funding/prizes.</div>
+                <div class="task-deliverable">Finalized Budget & Sponsorship List</div>
+              </div>
+
+              <div class="task-item">
+                <div class="task-category">Venue & Permits</div>
+                <div class="task-description">Secure location. Obtain all necessary municipal permits (e.g., insurance, noise, public gathering).</div>
+                <div class="task-deliverable">Venue Contract & All Required Permits/Insurance Proof</div>
+              </div>
+
+              <div class="task-item">
+                <div class="task-category">Date & Timeline</div>
+                <div class="task-description">Set the final date and create a master timeline for all pre-event tasks.</div>
+                <div class="task-deliverable">Master Event Timeline (Gantt Chart or similar)</div>
+              </div>
+
+              <div class="task-item">
+                <div class="task-category">Infrastructure</div>
+                <div class="task-description">Plan site layout (course, spectator zones, vendors, first aid). Book rentals (Sound, Tents).</div>
+                <div class="task-deliverable">Site Map/Layout Diagram</div>
+              </div>
+
+              <div class="task-item">
+                <div class="task-category">Staffing</div>
+                <div class="task-description">Recruit and brief Judges, MC, Scorekeepers, Registration, and Safety teams.</div>
+                <div class="task-deliverable">Staff Roster with Assigned Roles and Training Schedule</div>
+              </div>
+
+              <div class="task-item">
+                <div class="task-category">Registration</div>
+                <div class="task-description">Set up online system for waivers, fee collection, and participant check-in flow.</div>
+                <div class="task-deliverable">Live Registration Portal & Waiver System</div>
+              </div>
+
+              <div class="task-item">
+                <div class="task-category">Prizes</div>
+                <div class="task-description">Source, organize, and prepare all cash, product, and physical awards.</div>
+                <div class="task-deliverable">Prize Inventory and Awards Script</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Costs -->
+          <div class="tab-content" id="costs" role="tabpanel">
+            <h2 class="table-section-title">Service Cost Breakdown</h2>
+            <p class="table-intro">Client-side cost estimates for external expenses we manage on your behalf. Our management service fee is quoted separately.</p>
+            
+            <div class="data-grid">
+              <div class="data-card">
+                <div class="data-card-header">Phase 1: Planning</div>
+                <div class="data-card-body">
+                  <div class="data-row">
+                    <div class="data-label">Cost Range</div>
+                    <div class="cost-badge">$300 – $2,500+</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Includes</div>
+                    <div class="data-value">Permits, fees, initial marketing materials, registration software access. Excludes major venue deposits.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="data-card">
+                <div class="data-card-header">Phase 2: Execution</div>
+                <div class="data-card-body">
+                  <div class="data-row">
+                    <div class="data-label">Cost Range</div>
+                    <div class="cost-badge">$1,000 – $7,000+</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Includes</div>
+                    <div class="data-value">Staff payroll (judges, MC, crew), venue rental, insurance premium, <strong>prizes & cash payouts</strong>, equipment rentals.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="data-card">
+                <div class="data-card-header">Phase 3: Wrap-up</div>
+                <div class="data-card-body">
+                  <div class="data-row">
+                    <div class="data-label">Cost Range</div>
+                    <div class="cost-badge">$100 – $500</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Includes</div>
+                    <div class="data-value">Administrative costs, final media storage/transfer fees, thank-you items for staff/volunteers.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="data-card">
+                <div class="data-card-header">Promotional Add-ons</div>
+                <div class="data-card-body">
+                  <div class="data-row">
+                    <div class="data-label">Cost Range</div>
+                    <div class="cost-badge">$750 – $8,000+</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Includes</div>
+                    <div class="data-value">Filmer/photographer fees, professional video editing, social media management, targeted digital ad spend.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <h2 class="table-section-title">Key External Costs (Mandatory)</h2>
+            <p class="table-intro">These are required expenses for most professional events.</p>
+            
+            <div class="data-grid" style="opacity: 1;">
+              <div class="data-card">
+                <div class="data-card-header">General Liability Insurance</div>
+                <div class="data-card-body">
+                  <div class="data-row">
+                    <div class="data-label">Typical Cost</div>
+                    <div class="cost-badge">$300 – $1,500+</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Coverage</div>
+                    <div class="data-value">Single event policy</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Notes</div>
+                    <div class="data-value">Required by most venues. Target <strong>$1M - $2M</strong> aggregate coverage.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="data-card">
+                <div class="data-card-header">Prizes (Cash & Product)</div>
+                <div class="data-card-body">
+                  <div class="data-row">
+                    <div class="data-label">Typical Cost</div>
+                    <div class="cost-badge">$500 – $10,000+</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Variable</div>
+                    <div class="data-value">Highly dependent on event scale</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Notes</div>
+                    <div class="data-value">Can be offset by securing <strong>in-kind product donations</strong> from sponsors.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="data-card">
+                <div class="data-card-header">First Aid / Medic</div>
+                <div class="data-card-body">
+                  <div class="data-row">
+                    <div class="data-label">Typical Cost</div>
+                    <div class="cost-badge">$200 – $500</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Service</div>
+                    <div class="data-value">Certified EMT attendant</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Notes</div>
+                    <div class="data-value">Recommended on-site for liability management and participant safety.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 3: Staffing -->
+          <div class="tab-content" id="staffing" role="tabpanel">
+            <h2 class="table-section-title">Phase 2: Event Day Staffing & Labor Costs</h2>
+            <p class="table-intro">Estimated daily rates for key roles we staff and manage on your behalf. These are client-side costs.</p>
+            
+            <div class="data-grid">
+              <div class="data-card">
+                <div class="data-card-header">Event Manager / Director</div>
+                <div class="data-card-body">
+                  <div class="data-row">
+                    <div class="data-label">Headcount</div>
+                    <div class="data-value">1</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Daily Rate</div>
+                    <div class="data-value">$250 – $500</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Total Labor</div>
+                    <div class="cost-badge">$250 – $500</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Key Responsibility</div>
+                    <div class="data-value">Master execution, crisis management, client communication.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="data-card">
+                <div class="data-card-header">Officials (Judges/Scorekeepers)</div>
+                <div class="data-card-body">
+                  <div class="data-row">
+                    <div class="data-label">Headcount</div>
+                    <div class="data-value">2 – 4</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Daily Rate</div>
+                    <div class="data-value">$100 – $250</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Total Labor</div>
+                    <div class="cost-badge">$200 – $1,000</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Key Responsibility</div>
+                    <div class="data-value">Accurate scoring based on pre-defined criteria, heat management.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="data-card">
+                <div class="data-card-header">Announcer / MC</div>
+                <div class="data-card-body">
+                  <div class="data-row">
+                    <div class="data-label">Headcount</div>
+                    <div class="data-value">1</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Daily Rate</div>
+                    <div class="data-value">$150 – $350</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Total Labor</div>
+                    <div class="cost-badge">$150 – $350</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Key Responsibility</div>
+                    <div class="data-value">Energy, public announcements, time management flow.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="data-card">
+                <div class="data-card-header">Logistics / Operations</div>
+                <div class="data-card-body">
+                  <div class="data-row">
+                    <div class="data-label">Headcount</div>
+                    <div class="data-value">1 – 2</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Daily Rate</div>
+                    <div class="data-value">$75 – $150</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Total Labor</div>
+                    <div class="cost-badge">$75 – $300</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Key Responsibility</div>
+                    <div class="data-value">Registration, check-in, vendor liaison, general runner tasks.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="data-card">
+                <div class="data-card-header">Safety / First Aid</div>
+                <div class="data-card-body">
+                  <div class="data-row">
+                    <div class="data-label">Headcount</div>
+                    <div class="data-value">1 – 2</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Daily Rate</div>
+                    <div class="data-value">$100 – $200</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Total Labor</div>
+                    <div class="cost-badge">$100 – $400</div>
+                  </div>
+                  <div class="data-row">
+                    <div class="data-label">Key Responsibility</div>
+                    <div class="data-value">On-site medic/EMT, course monitoring, risk mitigation.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="total-box">
+              <div class="total-label">Total Estimated Labor (Excluding Prizes)</div>
+              <div class="total-value">$875 – $2,550</div>
+            </div>
+          </div>
+
+          <!-- Tab 4: Promo -->
+          <div class="tab-content" id="promo" role="tabpanel">
+            <h2 class="table-section-title">Promotional Packages (Add-on Services)</h2>
+            <p class="table-intro">Maximize your event's reach and sponsor ROI with professional media production, digital marketing, and comprehensive reporting.</p>
+            
+            <div class="tier-grid">
+              <div class="tier-card">
+                <span class="tier-badge">Tier 1</span>
+                <div class="tier-name">Social Spark</div>
+                <div class="tier-price">$750 – $1,500</div>
+                <div class="tier-details">
+                  <div class="tier-section">
+                    <div class="tier-section-label">Focus</div>
+                    <div class="tier-section-value">Maximize event day reach for local engagement.</div>
+                  </div>
+                  <div class="tier-section">
+                    <div class="tier-section-label">Deliverables</div>
+                    <div class="tier-section-value">
+                      • Live Instagram/TikTok Story coverage (2-3 hrs)<br>
+                      • 15-20 edited event photos<br>
+                      • 1 post-event email blast
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tier-card">
+                <span class="tier-badge">Tier 2 • Recommended</span>
+                <div class="tier-name">Community Hype</div>
+                <div class="tier-price">$2,500 – $4,500</div>
+                <div class="tier-details">
+                  <div class="tier-section">
+                    <div class="tier-section-label">Focus</div>
+                    <div class="tier-section-value">Professional video asset and balanced marketing.</div>
+                  </div>
+                  <div class="tier-section">
+                    <div class="tier-section-label">Deliverables</div>
+                    <div class="tier-section-value">
+                      <strong>All Tier 1, PLUS:</strong><br>
+                      • <strong>60-90 sec Professional Highlight Reel</strong><br>
+                      • 50-75 high-res edited photos<br>
+                      • 1 week of pre-event social countdown (6 posts/Reels)<br>
+                      • Basic Sponsor Metrics Report
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="tier-card">
+                <span class="tier-badge">Tier 3</span>
+                <div class="tier-name">Pro-Am / Full Media</div>
+                <div class="tier-price">$5,000 – $8,000+</div>
+                <div class="tier-details">
+                  <div class="tier-section">
+                    <div class="tier-section-label">Focus</div>
+                    <div class="tier-section-value">Comprehensive media and corporate sponsor fulfillment.</div>
+                  </div>
+                  <div class="tier-section">
+                    <div class="tier-section-label">Deliverables</div>
+                    <div class="tier-section-value">
+                      <strong>All Tier 2, PLUS:</strong><br>
+                      • <strong>3-5 min Cinematic Event Recap Video</strong> (4K, interviews)<br>
+                      • Full 3-Part Direct Marketing (SMS/Email) Campaign<br>
+                      • Professional Press Release distribution<br>
+                      • Comprehensive Sponsor Gold Report
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-box" style="margin-top: 80px;">
+          <h2 class="cta-title">Ready to Plan Your Event?</h2>
+          <p class="cta-text">Let's discuss your vision and create something amazing together.</p>
+          <a href="contact.html" class="cta-button">Get Started</a>
+        </div>
+
+      </article>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small id="copyright"></small>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/theme.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+
+  <script>
+    // Tab functionality with GSAP animations
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const tabContents = document.querySelectorAll('.tab-content');
+      const tabNav = document.querySelector('.tab-nav');
+      
+      // Add scroll effect to sticky tabs
+      let lastScroll = 0;
+      window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll > 600) {
+          tabNav.classList.add('scrolled');
+        } else {
+          tabNav.classList.remove('scrolled');
+        }
+        
+        lastScroll = currentScroll;
+      });
+      
+      // Function to wait for GSAP
+      function waitForGsap(callback) {
+        if (window.gsap) {
+          callback();
+        } else {
+          setTimeout(() => waitForGsap(callback), 50);
+        }
+      }
+
+      waitForGsap(() => {
+        // Initial animation for first tab
+        const firstContent = document.querySelector('.tab-content.active .task-list, .tab-content.active .data-grid');
+        if (firstContent) {
+          gsap.to(firstContent, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: 'power2.out',
+            delay: 0.3
+          });
+
+          // Animate individual items
+          const items = firstContent.querySelectorAll('.task-item, .data-card');
+          gsap.fromTo(items,
+            { opacity: 0, y: 20 },
+            { 
+              opacity: 1, 
+              y: 0, 
+              duration: 0.5,
+              stagger: 0.08,
+              ease: 'power2.out',
+              delay: 0.4
+            }
+          );
+        }
+
+        // Tab switching
+        tabButtons.forEach((button) => {
+          button.addEventListener('click', () => {
+            const targetTab = button.dataset.tab;
+            
+            // Update button states
+            tabButtons.forEach(btn => {
+              btn.classList.remove('active');
+              btn.setAttribute('aria-selected', 'false');
+            });
+            button.classList.add('active');
+            button.setAttribute('aria-selected', 'true');
+            
+            // Animate tab content
+            tabContents.forEach(content => {
+              if (content.id === targetTab) {
+                // Fade out current content
+                const currentContent = document.querySelector('.tab-content.active');
+                if (currentContent && currentContent !== content) {
+                  gsap.to(currentContent, {
+                    opacity: 0,
+                    y: -20,
+                    duration: 0.3,
+                    ease: 'power2.in',
+                    onComplete: () => {
+                      currentContent.classList.remove('active');
+                      
+                      // Fade in new content
+                      content.classList.add('active');
+                      const container = content.querySelector('.task-list, .data-grid, .tier-grid');
+                      
+                      gsap.fromTo(content,
+                        { opacity: 0, y: 20 },
+                        { opacity: 1, y: 0, duration: 0.4, ease: 'power2.out' }
+                      );
+                      
+                      if (container) {
+                        gsap.fromTo(container,
+                          { opacity: 0, y: 30 },
+                          { 
+                            opacity: 1, 
+                            y: 0, 
+                            duration: 0.6, 
+                            ease: 'power2.out', 
+                            delay: 0.2 
+                          }
+                        );
+
+                        // Animate individual items
+                        const items = container.querySelectorAll('.task-item, .data-card, .tier-card');
+                        gsap.fromTo(items,
+                          { opacity: 0, y: 20 },
+                          { 
+                            opacity: 1, 
+                            y: 0, 
+                            duration: 0.5,
+                            stagger: 0.08,
+                            ease: 'power2.out',
+                            delay: 0.3
+                          }
+                        );
+                      }
+
+                      // Scroll to top of tabs
+                      if (tabNav) {
+                        const offset = 100;
+                        const elementPosition = tabNav.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.pageYOffset - offset;
+                        
+                        window.scrollTo({
+                          top: offsetPosition,
+                          behavior: 'smooth'
+                        });
+                      }
+                    }
+                  });
+                }
+              }
+            });
+          });
+        });
+
+        // Hover animations for cards
+        const cards = document.querySelectorAll('.data-card, .tier-card');
+        cards.forEach(card => {
+          card.addEventListener('mouseenter', () => {
+            gsap.to(card, {
+              scale: 1.02,
+              duration: 0.3,
+              ease: 'power2.out'
+            });
+          });
+          
+          card.addEventListener('mouseleave', () => {
+            gsap.to(card, {
+              scale: 1,
+              duration: 0.3,
+              ease: 'power2.out'
+            });
+          });
+        });
+
+        // Hover animations for task items
+        const taskItems = document.querySelectorAll('.task-item');
+        taskItems.forEach(item => {
+          item.addEventListener('mouseenter', () => {
+            gsap.to(item, {
+              x: 8,
+              duration: 0.3,
+              ease: 'power2.out'
+            });
+          });
+          
+          item.addEventListener('mouseleave', () => {
+            gsap.to(item, {
+              x: 0,
+              duration: 0.3,
+              ease: 'power2.out'
+            });
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

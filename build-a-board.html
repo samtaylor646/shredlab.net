@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Build-a-Board Workshop — ShredLab Services</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+</head>
+<body class="theme-root" data-theme="light">
+
+  <!-- Header -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="ShredLab Home">
+        <img src="assets/img/shred-icon-blk.png" alt="ShredLab" class="brand-logo">
+        ShredLab
+      </a>
+
+      <div class="controls">
+        <nav class="global-nav" aria-label="Primary">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link active" href="services.html">Services</a>
+          <a class="nav-link" href="events.html">Events</a>
+          <a class="nav-link" href="contact.html">Contact</a>
+        </nav>
+
+        <!-- Theme toggle (Day/Night) -->
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+          <svg id="icon-light" class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+          <svg id="icon-dark" class="icon hidden" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <!-- Mobile menu toggle -->
+        <button id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+          <svg class="close-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="site-main" id="main" role="main">
+    <div class="container">
+
+      <!-- Back button -->
+      <div class="back-nav">
+        <a href="services.html" class="back-link">
+          <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+          Back to Services
+        </a>
+      </div>
+
+      <!-- Service Detail -->
+      <article class="service-detail">
+        <!-- Hero -->
+        <div class="hero">
+          <img class="hero-img" src="assets/img/beer-vanhoutte-ZrydxZppMRA-unsplash.jpg" alt="Build-a-Board Workshop">
+          <div class="hero-overlay">
+            <span class="card-pill">Workshops</span>
+          </div>
+        </div>
+
+        <!-- Header -->
+        <header class="page-header">
+          <h1 class="page-title">Build-a-Board Workshop</h1>
+          
+          <div class="meta-grid">
+            <div class="meta-item">
+              <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              <div class="meta-text">
+                <span class="meta-label">Duration</span>
+                <span class="meta-value">2-3 Hours</span>
+              </div>
+            </div>
+
+            <div class="meta-item">
+              <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+              <div class="meta-text">
+                <span class="meta-label">Age Range</span>
+                <span class="meta-value">8+</span>
+              </div>
+            </div>
+
+            <div class="meta-item">
+              <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+              <div class="meta-text">
+                <span class="meta-label">Skill Level</span>
+                <span class="meta-value">All Levels</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content -->
+        <div class="content-sections">
+          <!-- Description -->
+          <section class="content-section">
+            <h2 class="content-section-title">About This Workshop</h2>
+            <div class="content-description">
+              <p>Learn to build and customize your own skateboard from the ground up! This hands-on workshop is perfect for anyone interested in understanding how skateboards work and expressing creativity through board art.</p>
+              
+              <p>You'll learn how to assemble a complete skateboard, apply grip tape like a pro, install trucks and wheels properly, and create custom artwork for your deck. All materials and tools are provided, and you'll take home your finished board.</p>
+
+              <p>Perfect for individuals, groups, birthday parties, or team-building events. No prior experience necessary!</p>
+            </div>
+          </section>
+
+          <!-- Details -->
+          <section class="content-section">
+            <h2 class="content-section-title">Details</h2>
+            <div class="details-grid">
+              <div class="detail-item">
+                <h3 class="detail-heading">What's Included</h3>
+                <ul class="detail-list">
+                  <li>Complete skateboard deck</li>
+                  <li>Trucks, wheels, and bearings</li>
+                  <li>Grip tape and tools</li>
+                  <li>Art supplies and guidance</li>
+                  <li>Professional instruction</li>
+                  <li>Take home your custom board</li>
+                </ul>
+              </div>
+
+              <div class="detail-item">
+                <h3 class="detail-heading">What to Bring</h3>
+                <ul class="detail-list">
+                  <li>Creativity and enthusiasm</li>
+                  <li>Comfortable clothing</li>
+                  <li>Optional: Reference images for your design</li>
+                </ul>
+              </div>
+
+              <div class="detail-item">
+                <h3 class="detail-heading">Pricing</h3>
+                <p class="detail-text">Individual: $150 per person<br>Group rates available for 4+ participants<br>Contact us for custom packages</p>
+              </div>
+            </div>
+          </section>
+
+          <!-- Inquiry Form -->
+          <section class="content-section">
+            <h2 class="content-section-title">Request Information</h2>
+            <form class="inquiry-form" id="inquiryForm" method="POST" action="https://formspree.io/f/YOUR_FORM_ID">
+              <input type="hidden" name="service" value="Build-a-Board Workshop">
+              
+              <div class="form-field">
+                <label for="name">Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required>
+              </div>
+
+              <div class="form-field">
+                <label for="email">Email <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required>
+              </div>
+
+              <div class="form-field">
+                <label for="phone">Phone <span class="required">*</span></label>
+                <input type="tel" id="phone" name="phone" required>
+              </div>
+
+              <div class="form-field">
+                <label for="participants">Number of Participants <span class="required">*</span></label>
+                <input type="number" id="participants" name="participants" min="1" required>
+              </div>
+
+              <div class="form-field">
+                <label for="preferred_date">Preferred Date</label>
+                <input type="date" id="preferred_date" name="preferred_date">
+              </div>
+
+              <div class="form-field">
+                <label for="message">Additional Details</label>
+                <textarea id="message" name="message" rows="6" placeholder="Tell us about your group, any special requests, or questions you have..."></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="cta-button">Send Inquiry</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small id="copyright"></small>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/theme.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

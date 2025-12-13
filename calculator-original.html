@@ -1,0 +1,1584 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shred Lab - Quote Calculator</title>
+
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@40,200,0,0&icon_names=library_add" />
+
+  <!-- PDF Export Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js" defer></script>
+
+  <style>
+    .section-quote {
+      padding-bottom: 40px;
+      border-bottom: none;
+    }
+
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 40px;
+    }
+
+    .calculator-summary-sticky {
+      position: sticky;
+      top: 120px;
+      align-self: flex-start;
+    }
+
+    .calculator-grid .form-field {
+      margin-bottom: 0;
+    }
+
+    .calculator-grid .form-field input[type="text"],
+    .calculator-grid .form-field input[type="number"],
+    .calculator-grid .form-field select {
+      height: 48px;
+      font-size: 15px;
+    }
+
+    .radio-card-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+    
+    .radio-card-label {
+      display: block;
+      padding: 40px 20px 20px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      height: 100%;
+      min-height: 140px;
+    }
+
+    .radio-card-label:hover {
+      border-color: var(--text);
+    }
+    
+    .radio-card-label .tier-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      display: block;
+      margin-bottom: 4px;
+      transition: color 0.2s ease;
+    }
+
+    .radio-card-label .tier-fee {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+      display: block;
+      margin-bottom: 8px;
+      transition: color 0.2s ease;
+    }
+    
+    .radio-card-label .tier-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.4;
+      transition: color 0.2s ease;
+      text-transform: uppercase;
+    }
+    
+    .radio-card-input {
+      display: none;
+    }
+
+    .radio-card-input:checked + .radio-card-label {
+      background: var(--text);
+      border-color: var(--text);
+    }
+
+    .radio-card-input:checked + .radio-card-label .tier-name,
+    .radio-card-input:checked + .radio-card-label .tier-fee,
+    .radio-card-input:checked + .radio-card-label .tier-desc {
+      color: var(--bg);
+    }
+    
+    .radio-card-input:checked + .radio-card-label .tier-desc {
+      opacity: 0.7;
+    }
+
+    .custom-card-default-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
+      text-align: center;
+      padding-top: 0px;
+    }
+    
+    .custom-card-material-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: none;
+      padding: 0;
+      margin-top: 0px;
+      cursor: pointer;
+    }
+
+    .custom-card-material-icon .material-symbols-outlined {
+      font-size: 62px;
+      color: var(--text);
+      font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 40; 
+      transition: all 0.2s ease;
+    }
+
+    .radio-card-label:hover .custom-card-material-icon .material-symbols-outlined {
+      transform: scale(1.1);
+    }
+    
+    .radio-card-input:checked + .radio-card-label .custom-card-material-icon .material-symbols-outlined {
+      color: var(--bg);
+      opacity: 0.7;
+    }
+
+    .dynamic-row-header {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 50px;
+      gap: 15px;
+      padding: 0 10px 10px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 15px;
+    }
+    .dynamic-row-header.misc {
+      grid-template-columns: 3fr 1fr 1fr 50px;
+    }
+    .dynamic-row-header.discount {
+      grid-template-columns: 3fr 1fr 1fr 50px;
+    }
+
+    .dynamic-row-header .header-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .dynamic-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr 50px;
+      gap: 15px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .dynamic-row.misc {
+      grid-template-columns: 3fr 1fr 1fr 50px;
+    }
+    .dynamic-row.discount {
+      grid-template-columns: 3fr 1fr 1fr 50px;
+    }
+
+    .dynamic-row .form-field {
+      width: 100%;
+    }
+
+    .dynamic-row .remove-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--text);
+      background: var(--text);
+      color: var(--bg);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .dynamic-row .remove-btn .trash-icon {
+      width: 20px;
+      height: 20px;
+      stroke: var(--bg);
+    }
+
+    .dynamic-row .remove-btn:hover {
+      border-color: #ff0000;
+      background: #ff0000;
+      color: #ffffff;
+    }
+    
+    .dynamic-row .remove-btn:hover .trash-icon {
+      stroke: #ffffff;
+    }
+
+    .summary-card .card-body {
+      padding: 30px;
+    }
+    .summary-section {
+      padding-bottom: 8px;
+      margin-bottom: 8px;
+    }
+    .summary-section:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+      margin-bottom: 0;
+    }
+
+    #discount-summary-section {
+      display: none;
+    }
+
+    .summary-section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 15px;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 15px;
+      margin-bottom: 8px;
+    }
+    .summary-line .label {
+      color: var(--muted);
+    }
+    .summary-line .value {
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .summary-total {
+      font-size: 18px;
+      font-weight: 700;
+      border-top: 1px solid var(--border);
+      margin-top: 8px;
+      padding-top: 8px;
+    }
+    .summary-total .value {
+      font-size: 20px;
+    }
+    .summary-line.discount .value {
+      color: #ff0000;
+    }
+
+    .grand-total {
+      margin-top: 0px;
+      padding-top: 16px;
+      border-top: 1px solid var(--text);
+    }
+    .grand-total .label {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+    }
+    .grand-total .value {
+      font-size: 36px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* Line item breakdown styling */
+    .line-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 4px;
+      padding: 4px 0;
+    }
+    .line-item .item-name {
+      color: var(--muted);
+      flex: 1;
+    }
+    .line-item .item-detail {
+      color: var(--muted);
+      margin: 0 8px;
+      font-size: 12px;
+    }
+    .line-item .item-value {
+      font-weight: 600;
+      color: var(--text);
+      text-align: right;
+    }
+
+    @media (max-width: 1024px) {
+      .calculator-grid {
+        grid-template-columns: 1fr;
+      }
+      .calculator-summary-sticky {
+        position: relative;
+        top: 0;
+        margin-top: 40px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .radio-card-group {
+        grid-template-columns: 1fr;
+      }
+
+      .dynamic-row-header {
+        display: none;
+      }
+
+      .dynamic-row,
+      .dynamic-row.misc,
+      .dynamic-row.discount {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px 15px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .dynamic-row .form-field:first-child {
+        grid-column: 1 / -1;
+      }
+
+      .dynamic-row .remove-btn {
+        grid-column: 2 / 3;
+        grid-row: 2 / 3;
+        height: 48px;
+        width: 100%;
+      }
+      .dynamic-row.misc .remove-btn,
+      .dynamic-row.discount .remove-btn {
+         grid-row: 2 / 3;
+      }
+      .dynamic-row.staff .remove-btn {
+         grid-row: 3 / 4;
+      }
+    }
+
+    /* Loading indicator */
+    .loading {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body class="theme-root" data-theme="light">
+
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Shred Lab Home">
+        <img src="assets/img/shred-icon-blk.png" alt="Shred Lab" class="brand-logo">
+        Shred Lab
+      </a>
+
+      <div class="controls">
+        <nav class="global-nav" aria-label="Primary">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link" href="services.html">Services</a>
+          <a class="nav-link" href="events.html">Events</a>
+          <a class="nav-link" href="contact.html">Contact</a>
+        </nav>
+
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+          <svg id="icon-light" class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+          <svg id="icon-dark" class="icon hidden" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <button id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+          <svg class="close-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="site-main" id="main" role="main">
+    <div class="container">
+      
+      <section class="section intro">
+          <h1 class="section-title">Quote Calculator</h1>
+          <p class="section-lead">Real-time cost estimation for event services. For internal use only.</p>
+      </section>
+
+      <section class="section">
+        <div class="calculator-grid">
+
+          <div class="calculator-inputs">
+
+            <!-- QUOTE MANAGEMENT SECTION -->
+            <section class="content-section">
+              <h2 class="content-section-title">Quote Management</h2>
+              
+              <div class="form-field">
+                <label for="quote-name">Quote Name</label>
+                <input type="text" id="quote-name" placeholder="e.g., Summer Festival 2025">
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px;">
+                <button onclick="saveQuote()" class="cta-button" style="padding: 14px 28px; font-size: 14px;">
+                  Save Quote
+                </button>
+                <button onclick="resetCalculator()" class="cta-button" style="padding: 14px 28px; font-size: 14px; background: var(--muted); border-color: var(--muted);">
+                  New Quote
+                </button>
+              </div>
+
+              <div class="form-field" style="margin-top: 20px;">
+                <label for="saved-quotes-select">Load Saved Quote</label>
+                <select id="saved-quotes-select" onchange="loadQuote(this.value)">
+                  <option value="">-- Select a saved quote --</option>
+                </select>
+              </div>
+
+              <button onclick="deleteCurrentQuote()" class="cta-button" style="padding: 14px 28px; font-size: 14px; background: #ff0000; border-color: #ff0000; color: #ffffff; margin-top: 10px; width: 100%;">
+                Delete Selected Quote
+              </button>
+
+              <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border);">
+                <div class="form-field">
+                  <label for="export-format">Export Quote</label>
+                  <select id="export-format" onchange="handleExport(this.value)">
+                    <option value="">-- Select export format --</option>
+                    <option value="pdf">📄 PDF Invoice</option>
+                    <option value="csv">📊 CSV Data</option>
+                    <option value="json">💾 JSON Backup</option>
+                  </select>
+                </div>
+
+                <button onclick="document.getElementById('file-upload').click()" class="cta-button" style="padding: 14px 28px; font-size: 14px; background: var(--muted); border-color: var(--muted); width: 100%; margin-top: 10px;">
+                  📂 Import JSON File
+                </button>
+                <input type="file" id="file-upload" accept=".json" style="display: none;" onchange="importQuoteJSON(event)">
+              </div>
+            </section>
+            
+            <section class="calculator content-section">
+              <h2 class="content-section-title">1. Shred Lab Core Revenue (Tiered Fees)</h2>
+              <p class="content-description" style="font-size: 15px; color: var(--muted); margin-bottom: 24px;">Select the appropriate management and promotional tiers based on the event's scope and media requirements.</p>
+
+              <div class="form-field">
+                <label style="font-weight: 700; color: var(--text);">Blueprint Management Fee (Core Revenue)</label>
+                <div id="management-tier-container" class="radio-card-group" style="margin-top: 15px;">
+                </div>
+                
+                <div id="custom-fee-inputs-container" class="details-grid" style="display: none; grid-template-columns: 1fr 1fr 100px; gap: 15px; margin-top: 15px; align-items: flex-end;">
+                  <div id="management-custom-input-wrapper" class="form-field">
+                    <label for="management-fee-custom-input">Custom Fee ($)</label>
+                    <input id="management-fee-custom-input" type="number" value="0" min="0" step="100" oninput="calculateQuote()">
+                  </div>
+                  <div id="participants-input-wrapper" class="form-field">
+                    <label for="participants-input">Participants (Approx.)</label>
+                    <input id="participants-input" type="number" value="0" min="0" step="1" oninput="calculateQuote()">
+                  </div>
+                  <div class="form-field">
+                    <button type="button" id="clear-custom-fee-btn" class="cta-button" style="padding: 12px; font-size: 14px; width: 100%; background: var(--muted); border-color: var(--muted);" title="Clear Custom Fee">Clear</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-field" style="margin-top: 30px;">
+                <label style="font-weight: 700; color: var(--text);">Promotional Package Fee (Add-on Revenue)</label>
+                <div id="addon-tier-container" class="radio-card-group" style="margin-top: 15px;">
+                </div>
+              </div>
+            </section>
+
+            <section class="content-section">
+              <h2 class="content-section-title">2. Client Variable Costs (Mandatory Budget)</h2>
+              <p class="content-description" style="font-size: 15px; color: var(--muted); margin-bottom: 24px;">Standard costs that must be factored into the client's budget (e.g., rentals, insurance, prizes).</p>
+
+              <div class="details-grid">
+                <div class="form-field">
+                  <label for="rentals-budget">Venue & Rentals Budget</label>
+                  <input id="rentals-budget" type="number" value="1500" min="0" step="100" oninput="calculateQuote()">
+                </div>
+                 <div class="form-field">
+                  <label for="insurance-budget">Insurance & Permits</label>
+                  <input id="insurance-budget" type="number" value="500" min="0" step="10" oninput="calculateQuote()">
+                </div>
+                 <div class="form-field">
+                  <label for="prize-budget">Prize Purse Budget</label>
+                  <input id="prize-budget" type="number" value="1000" min="0" step="100" oninput="calculateQuote()">
+                </div>
+              </div>
+            </section>
+
+            <section class="content-section">
+              <h2 class="content-section-title">3. Staffing & Personnel Costs</h2>
+              <p class="content-description" style="font-size: 15px; color: var(--muted); margin-bottom: 24px;">Adjust the number of staff, hourly rate, and required hours for each role. (Mandatory client budget item).</p>
+              
+              <div class="dynamic-row-header staff">
+                <span class="header-label">Role</span>
+                <span class="header-label">Qty</span>
+                <span class="header-label">Rate/Hour ($)</span>
+                <span class="header-label">Hours</span>
+              </div>
+              <div id="staff-container">
+              </div>
+              <button id="add-staff-btn" onclick="addStaffRow({name: 'New Custom Crew', qty: 1, rate: 20, hours: 4})" class="cta-button" style="padding: 14px 28px; font-size: 14px; margin-top: 20px;">
+                  + Add Custom Staff Role
+              </button>
+            </section>
+
+            <section class="content-section">
+              <h2 class="content-section-title">4. Miscellaneous Costs (Flat Fee Items)</h2>
+              <p class="content-description" style="font-size: 15px; color: var(--muted); margin-bottom: 24px;">For one-time purchase items, supplies, or vendor fees not covered above.</p>
+              
+              <div class="dynamic-row-header misc">
+                <span class="header-label">Item / Description</span>
+                <span class="header-label">Qty</span>
+                <span class="header-label">Flat Fee ($)</span>
+              </div>
+              <div id="misc-container">
+              </div>
+              <button id="add-misc-btn" onclick="addMiscRow({name: 'Signage & Banners', qty: 1, fee: 350})" class="cta-button" style="padding: 14px 28px; font-size: 14px; margin-top: 20px;">
+                  + Add Miscellaneous Item
+              </button>
+            </section>
+
+            <section class="content-section">
+              <h2 class="content-section-title">5. Client Discount (Itemized)</h2>
+              <p class="content-description" style="font-size: 15px; color: var(--muted); margin-bottom: 24px;">Add itemized discounts. Percentage discounts are calculated from the pre-discount total.</p>
+              
+              <div class="dynamic-row-header discount">
+                <span class="header-label">Discount Name</span>
+                <span class="header-label">Type</span>
+                <span class="header-label">Value ($ or %)</span>
+              </div>
+              <div id="discount-container">
+              </div>
+              <button id="add-discount-btn" onclick="addDiscountRow({name: 'New Client Discount', type: 'flat', value: 100})" class="cta-button" style="padding: 14px 28px; font-size: 14px; margin-top: 20px;">
+                  + Add Discount Item
+              </button>
+            </section>
+
+          </div>
+
+          <div class="calculator-summary">
+            <div class="calculator-summary-sticky">
+              <article class="card summary-card" id="quote-summary">
+                <div class="card-body">
+                  <h2 class="content-section-title" style="margin-bottom: 24px;">Quote Summary</h2>
+
+                  <div class="summary-section">
+                    <h3 class="summary-section-title">Shred Lab Revenue (Fixed)</h3>
+                    <div id="revenue-breakdown"></div>
+                    <div class="summary-line summary-total">
+                      <span class="label">Total Shred Lab Fee:</span>
+                      <span class="value" id="shred-lab-total">$0</span>
+                    </div>
+                  </div>
+
+                  <div class="summary-section">
+                    <h3 class="summary-section-title">Client Variable Costs</h3>
+                    <div class="summary-line">
+                      <span class="label">Mandatory Budget Items:</span>
+                      <span class="value" id="variable-budget-subtotal">$3,000</span>
+                    </div>
+                    
+                    <div style="margin-top: 16px; margin-bottom: 8px;">
+                      <strong style="font-size: 14px; color: var(--text);">Staffing Detail:</strong>
+                    </div>
+                    <div id="staff-breakdown"></div>
+                    <div class="summary-line" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);">
+                      <span class="label">Staffing Subtotal:</span>
+                      <span class="value" id="staffing-subtotal">$0</span>
+                    </div>
+                    
+                    <div style="margin-top: 16px; margin-bottom: 8px;">
+                      <strong style="font-size: 14px; color: var(--text);">Miscellaneous Items:</strong>
+                    </div>
+                    <div id="misc-breakdown"></div>
+                    <div class="summary-line" style="margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--border);">
+                      <span class="label">Misc Subtotal:</span>
+                      <span class="value" id="misc-subtotal">$0</span>
+                    </div>
+
+                    <div class="summary-line summary-total">
+                      <span class="label">Total Client Variable Cost:</span>
+                      <span class="value" id="variable-total">$3,922</span>
+                    </div>
+                  </div>
+
+                  <div class="summary-section" id="discount-summary-section">
+                    <h3 class="summary-section-title">Client Discount</h3>
+                    <div id="discount-breakdown"></div>
+                    <div class="summary-line summary-total discount">
+                      <span class="label">Discount Applied:</span>
+                      <span class="value" id="discount-total">-$0</span>
+                    </div>
+                  </div>
+
+                  <div class="summary-line grand-total">
+                    <span class="label">Grand Total</span>
+                    <span class="value" id="grand-total">$9,722</span>
+                  </div>
+
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+  <footer class="site-footer" role="contentinfo">
+    <div class="container footer-inner">
+      <small id="copyright">© 2024 ShredLab. All rights reserved.</small>
+    </div> 
+  </footer>
+  
+  <script src="assets/js/theme.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+  <script>
+    // Global arrays for dynamic data
+    let staffRoles = [];
+    let miscItems = [];
+    let discountItems = [];
+    let currentQuoteFilename = null;
+    
+    // Tier Data
+    const managementTiers = [
+        { name: 'Tier 1 Local', scale: 'SMALL/LOCAL<br>(UP TO 50)', fee: 2300, id: 'mgm-local' },
+        { name: 'Tier 2 Regional', scale: 'MEDIUM/AMATEUR<br>(75-150)', fee: 4750, id: 'mgm-regional' },
+        { name: 'Tier 3 Open-Pro', scale: 'LARGE/PROFESSIONAL<br>(150+)', fee: 9750, id: 'mgm-proam' },
+        { name: 'Custom Tier', scale: 'PARTICIPANTS<br>(<span id="custom-card-participants">0</span>)', fee: 0, id: 'mgm-custom' }
+    ];
+
+    const addonTiers = [
+        { name: 'No Promotions', focus: 'OPT-OUT OF<br>MEDIA/SOCIAL', fee: 0, id: 'addon-0' },
+        { name: 'Media Essentials', focus: 'PHOTOS + VIDEOS<br>MEDIA/SOCIAL', fee: 1125, id: 'addon-1' },
+        { name: 'Community Hype', focus: 'FULL HIGHLIGHTS<br>MEDIA/SOCIAL/PR', fee: 3500, id: 'addon-2' },
+        { name: 'Full Media Hype', focus: 'CINEMATIC RECAP<br>MEDIA/SOCIAL/PR', fee: 6500, id: 'addon-3' },
+    ];
+
+    // Utility function for currency formatting
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0
+        }).format(amount);
+    };
+
+    // ============================================================================
+    // QUOTE MANAGEMENT SYSTEM
+    // ============================================================================
+
+    // Load initial data from JSON template
+    async function loadInitialData() {
+      try {
+        const response = await fetch('assets/data/initialData.json');
+        const data = await response.json();
+        
+        staffRoles = data.staffRoles;
+        miscItems = data.miscItems;
+        discountItems = data.discountItems || [];
+        
+        document.getElementById('rentals-budget').value = data.variableCosts.rentalsBudget;
+        document.getElementById('insurance-budget').value = data.variableCosts.insuranceBudget;
+        document.getElementById('prize-budget').value = data.variableCosts.prizeBudget;
+        
+        staffRoles.forEach(renderStaffRow);
+        miscItems.forEach(renderMiscRow);
+        
+        await loadQuotesList();
+        
+        console.log('Initial data loaded successfully');
+      } catch (error) {
+        console.error('Failed to load initial data:', error);
+        alert('Failed to load template data. Using defaults.');
+      }
+    }
+
+    // Get current calculator state
+    function getQuoteState() {
+      const selectedManagement = document.querySelector('input[name="management-tier"]:checked');
+      const selectedAddon = document.querySelector('input[name="addon-tier"]:checked');
+      
+      return {
+        version: '1.0',
+        quoteName: document.getElementById('quote-name').value.trim() || 'Untitled Quote',
+        createdDate: null,
+        modifiedDate: new Date().toISOString(),
+        tiers: {
+          managementTier: selectedManagement?.id || null,
+          addonTier: selectedAddon?.id || null,
+          customFee: parseFloat(document.getElementById('management-fee-custom-input').value) || 0,
+          customParticipants: parseFloat(document.getElementById('participants-input').value) || 0
+        },
+        variableCosts: {
+          rentalsBudget: parseFloat(document.getElementById('rentals-budget').value) || 0,
+          insuranceBudget: parseFloat(document.getElementById('insurance-budget').value) || 0,
+          prizeBudget: parseFloat(document.getElementById('prize-budget').value) || 0
+        },
+        staffRoles: JSON.parse(JSON.stringify(staffRoles)),
+        miscItems: JSON.parse(JSON.stringify(miscItems)),
+        discountItems: JSON.parse(JSON.stringify(discountItems))
+      };
+    }
+
+    // Restore calculator from state
+    function setQuoteState(state) {
+      document.getElementById('quote-name').value = state.quoteName || '';
+      
+      if (state.tiers.managementTier) {
+        const radio = document.getElementById(state.tiers.managementTier);
+        if (radio) radio.checked = true;
+      }
+      if (state.tiers.addonTier) {
+        const radio = document.getElementById(state.tiers.addonTier);
+        if (radio) radio.checked = true;
+      }
+      
+      document.getElementById('management-fee-custom-input').value = state.tiers.customFee || 0;
+      document.getElementById('participants-input').value = state.tiers.customParticipants || 0;
+      
+      if (state.tiers.customFee > 0) {
+        document.getElementById('custom-fee-inputs-container').style.display = 'grid';
+        document.querySelector('.custom-card-default-state').style.display = 'none';
+        document.querySelector('.custom-card-active-state').style.display = 'block';
+      }
+      
+      document.getElementById('rentals-budget').value = state.variableCosts.rentalsBudget || 0;
+      document.getElementById('insurance-budget').value = state.variableCosts.insuranceBudget || 0;
+      document.getElementById('prize-budget').value = state.variableCosts.prizeBudget || 0;
+      
+      staffRoles = JSON.parse(JSON.stringify(state.staffRoles || []));
+      miscItems = JSON.parse(JSON.stringify(state.miscItems || []));
+      discountItems = JSON.parse(JSON.stringify(state.discountItems || []));
+      
+      document.getElementById('staff-container').innerHTML = '';
+      document.getElementById('misc-container').innerHTML = '';
+      document.getElementById('discount-container').innerHTML = '';
+      
+      staffRoles.forEach(renderStaffRow);
+      miscItems.forEach(renderMiscRow);
+      discountItems.forEach(renderDiscountRow);
+      
+      calculateQuote();
+    }
+
+    // Save quote to server
+    async function saveQuote() {
+      const quoteName = document.getElementById('quote-name').value.trim();
+      if (!quoteName) {
+        alert('Please enter a quote name before saving');
+        return;
+      }
+      
+      const state = getQuoteState();
+      
+      try {
+        const response = await fetch('api/saveQuote.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(state)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          currentQuoteFilename = result.filename;
+          alert('Quote saved successfully!');
+          await loadQuotesList();
+          
+          const select = document.getElementById('saved-quotes-select');
+          select.value = result.filename;
+        } else {
+          alert('Failed to save quote: ' + (result.error || 'Unknown error'));
+        }
+      } catch (error) {
+        console.error('Save error:', error);
+        alert('Failed to save quote: ' + error.message);
+      }
+    }
+
+    // Load list of saved quotes
+    async function loadQuotesList() {
+      try {
+        const response = await fetch('api/listQuotes.php');
+        const quotes = await response.json();
+        
+        const select = document.getElementById('saved-quotes-select');
+        select.innerHTML = '<option value="">-- Select a saved quote --</option>';
+        
+        quotes.forEach(quote => {
+          const option = document.createElement('option');
+          option.value = quote.name;
+          const modDate = new Date(quote.modified).toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric'
+          });
+          option.textContent = `${quote.displayName} (${modDate})`;
+          select.appendChild(option);
+        });
+      } catch (error) {
+        console.error('Failed to load quotes list:', error);
+      }
+    }
+
+    // Load selected quote
+    async function loadQuote(quoteName) {
+      if (!quoteName) {
+        currentQuoteFilename = null;
+        return;
+      }
+      
+      try {
+        const response = await fetch(`api/loadQuote.php?name=${encodeURIComponent(quoteName)}`);
+        
+        if (!response.ok) {
+          throw new Error('Quote not found');
+        }
+        
+        const state = await response.json();
+        currentQuoteFilename = quoteName;
+        
+        setQuoteState(state);
+        alert('Quote loaded successfully!');
+      } catch (error) {
+        console.error('Load error:', error);
+        alert('Failed to load quote: ' + error.message);
+      }
+    }
+
+    // Delete current quote
+    async function deleteCurrentQuote() {
+      const select = document.getElementById('saved-quotes-select');
+      const quoteName = select.value;
+      
+      if (!quoteName) {
+        alert('Please select a quote to delete');
+        return;
+      }
+      
+      const confirmDelete = confirm(`Are you sure you want to delete "${select.options[select.selectedIndex].text}"?`);
+      if (!confirmDelete) return;
+      
+      try {
+        const response = await fetch('api/deleteQuote.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: quoteName })
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          alert('Quote deleted successfully!');
+          select.value = '';
+          currentQuoteFilename = null;
+          await loadQuotesList();
+        } else {
+          alert('Failed to delete quote: ' + (result.error || 'Unknown error'));
+        }
+      } catch (error) {
+        console.error('Delete error:', error);
+        alert('Failed to delete quote: ' + error.message);
+      }
+    }
+
+    // Reset calculator to initial state
+    async function resetCalculator() {
+      if (confirm('Are you sure you want to start a new quote? Any unsaved changes will be lost.')) {
+        currentQuoteFilename = null;
+        document.getElementById('quote-name').value = '';
+        document.getElementById('saved-quotes-select').value = '';
+        await loadInitialData();
+        renderTierOptions(managementTiers, 'management-tier-container', 'management-tier', null);
+        renderTierOptions(addonTiers, 'addon-tier-container', 'addon-tier', 'addon-0');
+        calculateQuote();
+      }
+    }
+
+    // Export to JSON file
+    function exportQuoteJSON(quoteName) {
+      const state = getQuoteState();
+      const filename = (quoteName || state.quoteName || 'quote').replace(/[^a-z0-9-_]/gi, '-').toLowerCase();
+      
+      const dataStr = JSON.stringify(state, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${filename}.json`;
+      link.click();
+      
+      URL.revokeObjectURL(url);
+    }
+
+    // Import from JSON file
+    function importQuoteJSON(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const state = JSON.parse(e.target.result);
+          setQuoteState(state);
+          alert('Quote imported successfully!');
+        } catch (error) {
+          alert('Failed to import quote: Invalid JSON file');
+          console.error('Import error:', error);
+        }
+      };
+      reader.readAsText(file);
+      
+      event.target.value = '';
+    }
+
+    // Export to CSV
+    function exportToCSV(quoteName) {
+      const state = getQuoteState();
+      const filename = (quoteName || state.quoteName || 'quote').replace(/[^a-z0-9-_]/gi, '-').toLowerCase();
+      
+      let csv = 'Shred Lab - Quote Calculator Export\n\n';
+      csv += `Quote Name:,"${state.quoteName}"\n`;
+      csv += `Export Date:,"${new Date().toLocaleDateString()}"\n`;
+      csv += `\n`;
+      
+      const selectedManagement = document.querySelector('input[name="management-tier"]:checked');
+      const selectedAddon = document.querySelector('input[name="addon-tier"]:checked');
+      const managementFee = selectedManagement?.id === 'mgm-custom' 
+        ? state.tiers.customFee 
+        : parseFloat(selectedManagement?.dataset.fee) || 0;
+      const addonFee = parseFloat(selectedAddon?.dataset.fee) || 0;
+      
+      csv += `\nSHRED LAB REVENUE (FIXED)\n`;
+      csv += `Category,Description,Amount\n`;
+      csv += `Management Fee,"${selectedManagement?.dataset.name || 'None'}",${managementFee}\n`;
+      csv += `Promotional Fee,"${selectedAddon?.dataset.name || 'None'}",${addonFee}\n`;
+      csv += `Subtotal,,${managementFee + addonFee}\n`;
+      
+      csv += `\nCLIENT VARIABLE COSTS\n`;
+      csv += `Category,Description,Amount\n`;
+      csv += `Venue & Rentals,,${state.variableCosts.rentalsBudget}\n`;
+      csv += `Insurance & Permits,,${state.variableCosts.insuranceBudget}\n`;
+      csv += `Prize Purse,,${state.variableCosts.prizeBudget}\n`;
+      
+      csv += `\nSTAFFING DETAIL\n`;
+      csv += `Role,Quantity,Rate/Hour,Hours,Subtotal\n`;
+      state.staffRoles.forEach(role => {
+        const subtotal = (role.qty || 0) * (role.rate || 0) * (role.hours || 0);
+        csv += `"${role.name}",${role.qty},${role.rate},${role.hours},${subtotal}\n`;
+      });
+      
+      csv += `\nMISCELLANEOUS ITEMS\n`;
+      csv += `Item,Quantity,Fee,Subtotal\n`;
+      state.miscItems.forEach(item => {
+        const subtotal = (item.qty || 0) * (item.fee || 0);
+        csv += `"${item.name}",${item.qty},${item.fee},${subtotal}\n`;
+      });
+      
+      if (state.discountItems && state.discountItems.length > 0) {
+        csv += `\nDISCOUNTS\n`;
+        csv += `Name,Type,Value\n`;
+        state.discountItems.forEach(discount => {
+          csv += `"${discount.name}",${discount.type === 'percent' ? 'Percent' : 'Flat'},${discount.value}\n`;
+        });
+      }
+      
+      const totals = calculateTotals(state);
+      csv += `\nTOTALS\n`;
+      csv += `Shred Lab Revenue,${totals.shredLabTotal}\n`;
+      csv += `Client Variable Costs,${totals.variableTotal}\n`;
+      if (totals.discountAmount > 0) {
+        csv += `Discount Applied,-${totals.discountAmount}\n`;
+      }
+      csv += `Grand Total,${totals.grandTotal}\n`;
+      
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${filename}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Calculate totals helper
+    function calculateTotals(state) {
+      const selectedManagement = document.querySelector('input[name="management-tier"]:checked');
+      const selectedAddon = document.querySelector('input[name="addon-tier"]:checked');
+      
+      const managementFee = selectedManagement?.id === 'mgm-custom' 
+        ? state.tiers.customFee 
+        : parseFloat(selectedManagement?.dataset.fee) || 0;
+      const addonFee = parseFloat(selectedAddon?.dataset.fee) || 0;
+      const shredLabTotal = managementFee + addonFee;
+      
+      const staffingTotal = state.staffRoles.reduce((sum, role) => 
+        sum + ((role.qty || 0) * (role.rate || 0) * (role.hours || 0)), 0);
+      const miscTotal = state.miscItems.reduce((sum, item) => 
+        sum + ((item.qty || 0) * (item.fee || 0)), 0);
+      const mandatoryBudget = (state.variableCosts.rentalsBudget || 0) + 
+                             (state.variableCosts.insuranceBudget || 0) + 
+                             (state.variableCosts.prizeBudget || 0);
+      const variableTotal = staffingTotal + miscTotal + mandatoryBudget;
+      
+      const preDiscountTotal = shredLabTotal + variableTotal;
+      let discountAmount = 0;
+      
+      (state.discountItems || []).forEach(item => {
+        if (item.type === 'percent') {
+          discountAmount += preDiscountTotal * (item.value / 100);
+        } else {
+          discountAmount += item.value;
+        }
+      });
+      
+      const grandTotal = preDiscountTotal - discountAmount;
+      
+      return { shredLabTotal, variableTotal, discountAmount, grandTotal };
+    }
+
+    // Export to PDF
+    async function exportToPDF(quoteName) {
+      const { jsPDF } = window.jspdf;
+      
+      if (!jsPDF) {
+        alert('PDF library not loaded. Please refresh the page and try again.');
+        return;
+      }
+      
+      try {
+        const summaryCard = document.getElementById('quote-summary');
+        const canvas = await html2canvas(summaryCard, {
+          scale: 2,
+          backgroundColor: '#ffffff',
+          logging: false
+        });
+        
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4'
+        });
+        
+        const imgWidth = 190;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        
+        pdf.addImage(imgData, 'PNG', 10, 10, imgWidth, imgHeight);
+        
+        const state = getQuoteState();
+        const filename = (quoteName || state.quoteName || 'quote').replace(/[^a-z0-9-_]/gi, '-').toLowerCase();
+        pdf.save(`${filename}.pdf`);
+        
+      } catch (error) {
+        console.error('PDF export error:', error);
+        alert('Failed to generate PDF: ' + error.message);
+      }
+    }
+
+    // Handle export dropdown
+    function handleExport(format) {
+      const quoteName = document.getElementById('quote-name').value.trim() || 'quote';
+      
+      switch(format) {
+        case 'pdf':
+          exportToPDF(quoteName);
+          break;
+        case 'csv':
+          exportToCSV(quoteName);
+          break;
+        case 'json':
+          exportQuoteJSON(quoteName);
+          break;
+      }
+      
+      document.getElementById('export-format').value = '';
+    }
+
+    // ============================================================================
+    // TIER RENDERING & CALCULATOR LOGIC
+    // ============================================================================
+    
+    const renderTierOptions = (tiers, containerId, groupName, defaultId) => {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        container.innerHTML = tiers.map(tier => {
+            let feeHTML = `<span class="tier-fee">${formatCurrency(tier.fee)}</span>`;
+            let contentHTML = `
+                <span class="tier-name">${tier.name}</span>
+                ${feeHTML}
+                <span class="tier-desc">${groupName === 'management-tier' ? tier.scale : tier.focus}</span>
+            `;
+
+            if (tier.id === 'mgm-custom') {
+                feeHTML = `<span class="tier-fee" id="custom-card-fee">$0</span>`;
+                contentHTML = `
+                    <div class="custom-card-active-state" style="display: none;">
+                        <span class="tier-name">CUSTOM TIER</span>
+                        ${feeHTML}
+                        <span class="tier-desc">${tier.scale}</span>
+                    </div>
+                    <div class="custom-card-default-state" style="display: flex;">
+                        <div class="custom-card-material-icon" role="button" aria-label="Set Custom Package" onclick="revealCustomInputs(event)">
+                          <span class="material-symbols-outlined">
+                            library_add
+                          </span>
+                        </div>
+                        <span class="tier-desc">${tier.name}<br>PACKAGE</span>
+                    </div>
+                `;
+            }
+
+            return `
+            <div>
+                <input type="radio" id="${tier.id}" name="${groupName}" value="${tier.id}" 
+                       data-fee="${tier.fee}" data-name="${tier.name}"
+                       class="radio-card-input" ${(defaultId !== null && tier.id === defaultId) ? 'checked' : ''}
+                       onchange="calculateQuote()">
+                <label for="${tier.id}" class="radio-card-label">
+                    ${contentHTML}
+                </label>
+            </div>
+            `
+        }).join('');
+    };
+    
+    const revealCustomInputs = (event) => {
+        event.preventDefault(); 
+        event.stopPropagation(); 
+        
+        document.getElementById('custom-fee-inputs-container').style.display = 'grid';
+        document.querySelector('.custom-card-default-state').style.display = 'none';
+        document.querySelector('.custom-card-active-state').style.display = 'block';
+
+        document.getElementById('mgm-custom').checked = true;
+        calculateQuote();
+    };
+
+    const clearCustomInputs = () => {
+        document.getElementById('management-fee-custom-input').value = 0;
+        document.getElementById('participants-input').value = 0;
+        
+        document.getElementById('custom-fee-inputs-container').style.display = 'none';
+        
+        const defaultState = document.querySelector('#management-tier-container #mgm-custom + .radio-card-label .custom-card-default-state');
+        const activeState = document.querySelector('#management-tier-container #mgm-custom + .radio-card-label .custom-card-active-state');
+        
+        if(defaultState && activeState) {
+            defaultState.style.display = 'flex';
+            activeState.style.display = 'none';
+        }
+
+        const customRadio = document.getElementById('mgm-custom');
+        if (customRadio.checked) {
+            customRadio.checked = false;
+        }
+        
+        calculateQuote();
+    };
+
+    const trashIconSVG = `
+      <svg class="trash-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M5 7h14m-1 0v11a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V7m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"></path>
+      </svg>
+    `;
+
+    const renderStaffRow = (staff) => {
+        const staffContainer = document.getElementById('staff-container');
+        const row = document.createElement('div');
+        row.id = `staff-row-${staff.id}`;
+        row.className = 'dynamic-row staff';
+        
+        row.innerHTML = `
+            <div class="form-field">
+                <input type="text" id="staff-name-${staff.id}" value="${staff.name}"
+                       oninput="updateStaffData(${staff.id}, 'name', this.value); calculateQuote();"
+                       placeholder="Role Name">
+            </div>
+            <div class="form-field">
+                <input type="number" id="staff-qty-${staff.id}" value="${staff.qty}" min="0"
+                       oninput="updateStaffData(${staff.id}, 'qty', this.value); calculateQuote();"
+                       placeholder="Qty">
+            </div>
+            <div class="form-field">
+                <input type="number" id="staff-rate-${staff.id}" value="${staff.rate}" min="0" step="0.5"
+                       oninput="updateStaffData(${staff.id}, 'rate', this.value); calculateQuote();"
+                       placeholder="Rate/Hr">
+            </div>
+            <div class="form-field">
+                <input type="number" id="staff-hours-${staff.id}" value="${staff.hours}" min="0" step="0.5"
+                       oninput="updateStaffData(${staff.id}, 'hours', this.value); calculateQuote();"
+                       placeholder="Hours">
+            </div>
+            <button onclick="removeStaffRow(${staff.id})" class="remove-btn" aria-label="Remove Staff Role">
+              ${trashIconSVG}
+            </button>
+        `;
+        staffContainer.appendChild(row);
+    };
+
+    const updateStaffData = (id, key, value) => {
+        const index = staffRoles.findIndex(role => role.id === id);
+        if (index > -1) {
+            if (key !== 'name') {
+                staffRoles[index][key] = parseFloat(value) || 0;
+            } else {
+                staffRoles[index][key] = value;
+            }
+        }
+    };
+
+    const addStaffRow = (defaults) => {
+        const newId = staffRoles.length > 0 ? Math.max(...staffRoles.map(r => r.id)) + 1 : 1;
+        const newRole = { id: newId, ...defaults };
+        staffRoles.push(newRole);
+        renderStaffRow(newRole);
+        calculateQuote();
+    };
+
+    const removeStaffRow = (id) => {
+        staffRoles = staffRoles.filter(role => role.id !== id);
+        document.getElementById(`staff-row-${id}`)?.remove();
+        calculateQuote();
+    };
+    
+    const renderMiscRow = (item) => {
+        const miscContainer = document.getElementById('misc-container');
+        const row = document.createElement('div');
+        row.id = `misc-row-${item.id}`;
+        row.className = 'dynamic-row misc';
+        
+        row.innerHTML = `
+            <div class="form-field">
+                <input type="text" id="misc-name-${item.id}" value="${item.name}"
+                       oninput="updateMiscData(${item.id}, 'name', this.value); calculateQuote();"
+                       placeholder="Item Name">
+            </div>
+            <div class="form-field">
+                <input type="number" id="misc-qty-${item.id}" value="${item.qty}" min="1"
+                       oninput="updateMiscData(${item.id}, 'qty', this.value); calculateQuote();"
+                       placeholder="Qty">
+            </div>
+            <div class="form-field">
+                <input type="number" id="misc-fee-${item.id}" value="${item.fee}" min="0" step="10"
+                       oninput="updateMiscData(${item.id}, 'fee', this.value); calculateQuote();"
+                       placeholder="Fee ($)">
+            </div>
+            <button onclick="removeMiscRow(${item.id})" class="remove-btn" aria-label="Remove Miscellaneous Item">
+              ${trashIconSVG}
+            </button>
+        `;
+        miscContainer.appendChild(row);
+    };
+
+    const updateMiscData = (id, key, value) => {
+        const index = miscItems.findIndex(item => item.id === id);
+        if (index > -1) {
+            if (key !== 'name') {
+                miscItems[index][key] = parseFloat(value) || 0;
+            } else {
+                miscItems[index][key] = value;
+            }
+        }
+    };
+
+    const addMiscRow = (defaults) => {
+        const newId = miscItems.length > 0 ? Math.max(...miscItems.map(r => r.id)) + 1 : 1;
+        const newRole = { id: newId, ...defaults };
+        miscItems.push(newRole);
+        renderMiscRow(newRole);
+        calculateQuote();
+    };
+
+    const removeMiscRow = (id) => {
+        miscItems = miscItems.filter(item => item.id !== id);
+        document.getElementById(`misc-row-${id}`)?.remove();
+        calculateQuote();
+    };
+
+    const renderDiscountRow = (item) => {
+        const discountContainer = document.getElementById('discount-container');
+        const row = document.createElement('div');
+        row.id = `discount-row-${item.id}`;
+        row.className = 'dynamic-row discount';
+        
+        row.innerHTML = `
+            <div class="form-field">
+                <input type="text" id="discount-name-${item.id}" value="${item.name}"
+                       oninput="updateDiscountData(${item.id}, 'name', this.value); calculateQuote();"
+                       placeholder="Discount Name">
+            </div>
+            <div class="form-field">
+                <select id="discount-type-${item.id}" onchange="updateDiscountData(${item.id}, 'type', this.value); calculateQuote();">
+                    <option value="flat" ${item.type === 'flat' ? 'selected' : ''}>Flat ($)</option>
+                    <option value="percent" ${item.type === 'percent' ? 'selected' : ''}>Percent (%)</option>
+                </select>
+            </div>
+            <div class="form-field">
+                <input type="number" id="discount-value-${item.id}" value="${item.value}" min="0" step="1"
+                       oninput="updateDiscountData(${item.id}, 'value', this.value); calculateQuote();"
+                       placeholder="Value">
+            </div>
+            <button onclick="removeDiscountRow(${item.id})" class="remove-btn" aria-label="Remove Discount Item">
+              ${trashIconSVG}
+            </button>
+        `;
+        discountContainer.appendChild(row);
+    };
+
+    const updateDiscountData = (id, key, value) => {
+        const index = discountItems.findIndex(item => item.id === id);
+        if (index > -1) {
+            if (key === 'name' || key === 'type') {
+                discountItems[index][key] = value;
+            } else {
+                discountItems[index][key] = parseFloat(value) || 0;
+            }
+        }
+    };
+
+    const addDiscountRow = (defaults) => {
+        const newId = discountItems.length > 0 ? Math.max(...discountItems.map(r => r.id)) + 1 : 1;
+        const newItem = { id: newId, ...defaults };
+        discountItems.push(newItem);
+        renderDiscountRow(newItem);
+        calculateQuote();
+    };
+
+    const removeDiscountRow = (id) => {
+        discountItems = discountItems.filter(item => item.id !== id);
+        document.getElementById(`discount-row-${id}`)?.remove();
+        calculateQuote();
+    };
+
+    // Render itemized breakdowns
+    function renderRevenueBreakdown() {
+        const container = document.getElementById('revenue-breakdown');
+        const selectedManagement = document.querySelector('input[name="management-tier"]:checked');
+        const selectedAddon = document.querySelector('input[name="addon-tier"]:checked');
+        
+        let html = '';
+        
+        if (selectedManagement) {
+            const fee = selectedManagement.id === 'mgm-custom' 
+                ? parseFloat(document.getElementById('management-fee-custom-input').value) || 0
+                : parseFloat(selectedManagement.dataset.fee) || 0;
+            html += `
+                <div class="line-item">
+                    <span class="item-name">${selectedManagement.dataset.name || 'Management Fee'}:</span>
+                    <span class="item-value">${formatCurrency(fee)}</span>
+                </div>
+            `;
+        }
+        
+        if (selectedAddon) {
+            const fee = parseFloat(selectedAddon.dataset.fee) || 0;
+            html += `
+                <div class="line-item">
+                    <span class="item-name">${selectedAddon.dataset.name || 'Add-on Fee'}:</span>
+                    <span class="item-value">${formatCurrency(fee)}</span>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = html;
+    }
+
+    function renderStaffBreakdown() {
+        const container = document.getElementById('staff-breakdown');
+        let html = '';
+        
+        staffRoles.forEach(role => {
+            const cost = (role.qty || 0) * (role.rate || 0) * (role.hours || 0);
+            if (cost > 0) {
+                html += `
+                    <div class="line-item">
+                        <span class="item-name">${role.name}</span>
+                        <span class="item-detail">${role.qty} × ${role.rate}/hr × ${role.hours}h</span>
+                        <span class="item-value">${formatCurrency(cost)}</span>
+                    </div>
+                `;
+            }
+        });
+        
+        container.innerHTML = html || '<div class="line-item"><span class="item-name">No staff roles added</span></div>';
+    }
+
+    function renderMiscBreakdown() {
+        const container = document.getElementById('misc-breakdown');
+        let html = '';
+        
+        miscItems.forEach(item => {
+            const cost = (item.qty || 0) * (item.fee || 0);
+            if (cost > 0) {
+                html += `
+                    <div class="line-item">
+                        <span class="item-name">${item.name}</span>
+                        <span class="item-detail">${item.qty} × ${formatCurrency(item.fee)}</span>
+                        <span class="item-value">${formatCurrency(cost)}</span>
+                    </div>
+                `;
+            }
+        });
+        
+        container.innerHTML = html || '<div class="line-item"><span class="item-name">No misc items added</span></div>';
+    }
+
+    function renderDiscountBreakdown() {
+        const container = document.getElementById('discount-breakdown');
+        let html = '';
+        
+        discountItems.forEach(item => {
+            const displayValue = item.type === 'percent' ? `${item.value}%` : formatCurrency(item.value);
+            html += `
+                <div class="line-item">
+                    <span class="item-name">${item.name}</span>
+                    <span class="item-detail">${displayValue}</span>
+                </div>
+            `;
+        });
+        
+        container.innerHTML = html;
+    }
+
+    // Main calculation function
+    const calculateQuote = () => {
+        let totalStaffingCost = 0;
+        let totalMiscCost = 0;
+        let totalDiscount = 0;
+
+        const customFeeInput = parseFloat(document.getElementById('management-fee-custom-input').value) || 0;
+        const customParticipantsInput = parseFloat(document.getElementById('participants-input').value) || 0;
+        
+        const customCardFeeSpan = document.getElementById('custom-card-fee');
+        const customCardParticipantsSpan = document.getElementById('custom-card-participants');
+        if (customCardFeeSpan) {
+            customCardFeeSpan.textContent = formatCurrency(customFeeInput);
+        }
+        if (customCardParticipantsSpan) {
+            customCardParticipantsSpan.textContent = customParticipantsInput;
+        }
+
+        for (const role of staffRoles) {
+            const cost = (role.qty || 0) * (role.rate || 0) * (role.hours || 0);
+            totalStaffingCost += cost;
+        }
+
+        for (const item of miscItems) {
+            const cost = (item.qty || 0) * (item.fee || 0);
+            totalMiscCost += cost;
+        }
+
+        const selectedManagement = document.querySelector('input[name="management-tier"]:checked');
+        let managementFee = 0;
+        let managementLabel = 'No Tier Selected'; 
+
+        if (selectedManagement && selectedManagement.id === 'mgm-custom') {
+            managementFee = customFeeInput;
+            managementLabel = 'Custom Tier';
+        } else if (selectedManagement) {
+            managementFee = parseFloat(selectedManagement.dataset.fee) || 0;
+            managementLabel = selectedManagement.dataset.name;
+        }
+        
+        const selectedAddon = document.querySelector('input[name="addon-tier"]:checked');
+        const addonFee = parseFloat(selectedAddon?.dataset.fee) || 0;
+        const addonLabel = selectedAddon?.dataset.name || 'No Add-on Selected';
+        
+        const totalShredLabFee = managementFee + addonFee;
+
+        const rentalsBudget = parseFloat(document.getElementById('rentals-budget').value) || 0;
+        const insuranceBudget = parseFloat(document.getElementById('insurance-budget').value) || 0;
+        const prizeBudget = parseFloat(document.getElementById('prize-budget').value) || 0;
+        const totalVariableBudget = rentalsBudget + insuranceBudget + prizeBudget;
+
+        const totalClientVariableCost = totalStaffingCost + totalVariableBudget + totalMiscCost;
+        
+        const preDiscountTotal = totalShredLabFee + totalClientVariableCost;
+        
+        for (const item of discountItems) {
+            if (item.type === 'percent') {
+                totalDiscount += preDiscountTotal * (item.value / 100);
+            } else {
+                totalDiscount += item.value;
+            }
+        }
+        const discountAmount = totalDiscount;
+
+        const grandTotal = preDiscountTotal - discountAmount;
+
+        renderRevenueBreakdown();
+        renderStaffBreakdown();
+        renderMiscBreakdown();
+        if (discountItems.length > 0) {
+            renderDiscountBreakdown();
+        }
+
+        document.getElementById('shred-lab-total').textContent = formatCurrency(totalShredLabFee);
+        document.getElementById('variable-budget-subtotal').textContent = formatCurrency(totalVariableBudget);
+        document.getElementById('staffing-subtotal').textContent = formatCurrency(totalStaffingCost);
+        document.getElementById('misc-subtotal').textContent = formatCurrency(totalMiscCost);
+        document.getElementById('variable-total').textContent = formatCurrency(totalClientVariableCost);
+
+        const discountSummaryEl = document.getElementById('discount-summary-section');
+        if (discountAmount > 0) {
+            discountSummaryEl.style.display = 'block';
+            document.getElementById('discount-total').textContent = '-' + formatCurrency(discountAmount);
+        } else {
+            discountSummaryEl.style.display = 'none';
+        }
+        
+        document.getElementById('grand-total').textContent = formatCurrency(grandTotal);
+    };
+
+    // Initial setup on load
+    document.addEventListener('DOMContentLoaded', async () => {
+        await loadInitialData();
+        
+        renderTierOptions(managementTiers, 'management-tier-container', 'management-tier', null); 
+        renderTierOptions(addonTiers, 'addon-tier-container', 'addon-tier', 'addon-0');
+        
+        document.getElementById('rentals-budget').addEventListener('input', calculateQuote);
+        document.getElementById('insurance-budget').addEventListener('input', calculateQuote);
+        document.getElementById('prize-budget').addEventListener('input', calculateQuote);
+        document.getElementById('management-fee-custom-input').addEventListener('input', calculateQuote);
+        document.getElementById('participants-input').addEventListener('input', calculateQuote);
+
+        document.querySelector('#management-tier-container').addEventListener('change', (e) => {
+            if (e.target.id === 'mgm-custom') {
+              document.getElementById('custom-fee-inputs-container').style.display = 'grid';
+              document.querySelector('#management-tier-container #mgm-custom + .radio-card-label .custom-card-default-state').style.display = 'none';
+              document.querySelector('#management-tier-container #mgm-custom + .radio-card-label .custom-card-active-state').style.display = 'block';
+            }
+            calculateQuote();
+        });
+
+        document.getElementById('clear-custom-fee-btn').addEventListener('click', clearCustomInputs);
+
+        calculateQuote();
+    });
+
+  </script>
+</body>
+</html>

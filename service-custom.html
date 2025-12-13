@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Custom Services — Shred Lab</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+</head>
+<body class="theme-root" data-theme="light">
+
+  
+  <!-- Header -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Shred Lab Home">
+        <img src="assets/img/shred-icon-blk.png" alt="Shred Lab" class="brand-logo">
+        Shred Lab
+      </a>
+
+      <div class="controls">
+        <nav class="global-nav" aria-label="Primary">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link active" href="services.html">Services</a>
+          <a class="nav-link" href="events.html">Events</a>
+          <a class="nav-link" href="#">Contact</a>
+        </nav>
+
+        <!-- Mobile menu toggle -->
+        <button id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+          <svg class="close-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+
+        <!-- Mobile menu toggle -->
+        <button id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+          <svg class="close-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="site-main" id="main" role="main">
+    <div class="container">
+
+      <!-- Back button -->
+      <div class="back-nav">
+        <a href="services.html" class="back-link">
+          <svg class="back-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"/>
+            <polyline points="12 19 5 12 12 5"/>
+          </svg>
+          Back to Services
+        </a>
+      </div>
+
+      <!-- Service Detail -->
+      <article class="service-detail">
+        <!-- Hero -->
+        <div class="hero">
+          <img class="hero-img" src="assets/img/joakim-honkasalo-6D75PWzBkmQ-unsplash.jpg" alt="Custom Services">
+          <div class="hero-overlay">
+            <span class="card-pill">Custom</span>
+          </div>
+        </div>
+
+        <!-- Header -->
+        <header class="page-header">
+          <h1 class="page-title">Custom Services</h1>
+          
+          <div class="meta-grid">
+            <div class="meta-item">
+              <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+              <div class="meta-text">
+                <span class="meta-label">Format</span>
+                <span class="meta-value">Flexible</span>
+              </div>
+            </div>
+
+            <div class="meta-item">
+              <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              <div class="meta-text">
+                <span class="meta-label">Availability</span>
+                <span class="meta-value">By Arrangement</span>
+              </div>
+            </div>
+
+            <div class="meta-item">
+              <svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+              </svg>
+              <div class="meta-text">
+                <span class="meta-label">Audience</span>
+                <span class="meta-value">All Ages</span>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- Content -->
+        <div class="content-sections">
+          <!-- Description -->
+          <section class="content-section">
+            <h2 class="content-section-title">Let's Create Something Unique</h2>
+            <div class="content-description">
+              <p>Have a unique project or creative vision? We love collaborating on custom experiences that combine skateboarding with art, education, and community building.</p>
+              
+              <p>From art workshops and improv sessions to team-building activities and special projects, we're open to bringing your ideas to life. Our flexible approach means we can adapt to your specific needs, goals, and audience.</p>
+
+              <p>Let's talk about your vision and create something amazing together!</p>
+            </div>
+          </section>
+
+          <!-- Details -->
+          <section class="content-section">
+            <h2 class="content-section-title">What We Can Do</h2>
+            <div class="details-grid">
+              <div class="detail-item">
+                <h3 class="detail-heading">Custom Services Include</h3>
+                <ul class="detail-list">
+                  <li>Art and design workshops</li>
+                  <li>Skateboard improv sessions</li>
+                  <li>Team building activities</li>
+                  <li>School programs</li>
+                  <li>Community projects</li>
+                  <li>Creative collaborations</li>
+                  <li>Special event programming</li>
+                  <li>Unique experiences</li>
+                </ul>
+              </div>
+
+              <div class="detail-item">
+                <h3 class="detail-heading">Past Projects</h3>
+                <ul class="detail-list">
+                  <li>Skateboard art installations</li>
+                  <li>Youth empowerment workshops</li>
+                  <li>Corporate team challenges</li>
+                  <li>Festival programming</li>
+                  <li>Educational demonstrations</li>
+                </ul>
+              </div>
+
+              <div class="detail-item">
+                <h3 class="detail-heading">Ideal For</h3>
+                <ul class="detail-list">
+                  <li>Schools and youth organizations</li>
+                  <li>Corporate teams</li>
+                  <li>Community centers</li>
+                  <li>Arts organizations</li>
+                  <li>Special events and festivals</li>
+                  <li>Creative collaborations</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <!-- Inquiry Form -->
+          <section class="content-section">
+            <h2 class="content-section-title">Tell Us About Your Project</h2>
+            <form class="inquiry-form" id="inquiryForm" method="POST" action="https://formspree.io/f/YOUR_FORM_ID">
+              <input type="hidden" name="service" value="Custom Services">
+              
+              <div class="form-field">
+                <label for="name">Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required>
+              </div>
+
+              <div class="form-field">
+                <label for="email">Email <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required>
+              </div>
+
+              <div class="form-field">
+                <label for="phone">Phone <span class="required">*</span></label>
+                <input type="tel" id="phone" name="phone" required>
+              </div>
+
+              <div class="form-field">
+                <label for="organization">Organization (if applicable)</label>
+                <input type="text" id="organization" name="organization">
+              </div>
+
+              <div class="form-field">
+                <label for="project_type">Project Type</label>
+                <select id="project_type" name="project_type">
+                  <option value="">Select an option</option>
+                  <option value="Workshop">Workshop</option>
+                  <option value="Meet Up">Meet Up</option>
+                  <option value="Contest">Contest</option>
+                  <option value="Educational Program">Educational Program</option>
+                  <option value="Community Event">Community Event</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="target_date">Target Date (if known)</label>
+                <input type="date" id="target_date" name="target_date">
+              </div>
+
+              <div class="form-field">
+                <label for="participants">Expected Participants</label>
+                <input type="number" id="participants" name="participants" min="1">
+              </div>
+
+              <div class="form-field">
+                <label for="project_description">Project Description <span class="required">*</span></label>
+                <textarea id="project_description" name="project_description" rows="6" placeholder="Tell us about your vision, goals, and what you're hoping to create..." required></textarea>
+              </div>
+
+              <div class="form-field">
+                <label for="additional_info">Additional Information</label>
+                <textarea id="additional_info" name="additional_info" rows="6" placeholder="Budget, timeline, location, special requirements, etc."></textarea>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="cta-button">Send Inquiry</button>
+              </div>
+            </form>
+          </section>
+        </div>
+      </article>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small id="copyright"></small>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/theme.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

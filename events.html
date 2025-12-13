@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shred Lab — Events</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js" defer></script>
+</head>
+<body class="theme-root" data-theme="light">
+
+  <!-- Header -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Shred Lab Home">
+        <img src="assets/img/shred-icon-blk.png" alt="Shred Lab" class="brand-logo">
+        Shred Lab
+      </a>
+
+      <div class="controls">
+        <nav class="global-nav" aria-label="Primary">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link" href="services.html">Services</a>
+          <a class="nav-link active" href="events.html">Events</a>
+          <a class="nav-link" href="#">Contact</a>
+        </nav>
+
+        <!-- Theme toggle (Day/Night) -->
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+          <svg id="icon-light" class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+          <svg id="icon-dark" class="icon hidden" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+
+        <!-- Mobile menu toggle -->
+        <button id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+          <svg class="close-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+
+
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="site-main" id="main" role="main">
+    <div class="container">
+
+      <!-- Intro -->
+      <section class="section intro">
+        <h1 class="section-title">Events</h1>
+        <p class="section-lead">Curated contests, clinics, camps and community sessions.</p>
+      </section>
+
+      <!-- Filter bar -->
+       <section class="section" id="filterSection">
+        <div class="filter-bar" role="toolbar" aria-label="Event filters">
+          <div class="filter-inner">
+            <div class="filter-left">
+              <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+              <button class="filter-btn" data-filter="contests" aria-pressed="false">Contests</button>
+              <!-- Commented out for now. if data-filter is added back, the articles below will appear.
+               -->
+              <button class="filter-btn" data-filter="classes" aria-pressed="false">Classes</button>
+              <button class="filter-btn" data-filter="camps" aria-pressed="false">Camps</button>
+              
+             
+              <button class="filter-btn" data-filter="community" aria-pressed="false">Community</button>
+            </div>
+
+            <!-- Layout toggle -->
+            <button id="layoutToggle" class="layout-toggle" aria-label="Toggle list view">
+              <svg id="icon-grid" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+              </svg>
+              <svg id="icon-list" class="icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="8" y1="6" x2="21" y2="6"/>
+                <line x1="8" y1="12" x2="21" y2="12"/>
+                <line x1="8" y1="18" x2="21" y2="18"/>
+                <circle cx="4" cy="6" r="1" fill="currentColor"/>
+                <circle cx="4" cy="12" r="1" fill="currentColor"/>
+                <circle cx="4" cy="18" r="1" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Events grid -->
+      <section class="section">
+        <div class="grid events-grid" id="eventsGrid">
+
+          <!-- CONTESTS (4) -->
+          <article class="card project-item" data-category="contests" data-date="2025-08-15" tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-1">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/zach-lezniewicz-mkqUabTd2s0-unsplash.jpg" alt="Summer Shred Contest">
+              </div>
+              <div class="card-body">
+                <span class="card-pill">Contests</span>
+                <h3 id="title-1" class="card-title">Summer Shred Contest</h3>
+                <div class="card-meta-header">
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">12:00 PM</span>
+                  </div>
+                </div>
+                <div class="card-description">Kick off the summer with our annual contest. Open to all ages and skill levels. Prizes for best trick, best run, and more! Join us for a day of fun, excitement, and community. Whether you're competing or spectating, there's something for everyone. <span class="read-more">Read more</span></div>
+                  <div class="card-meta-group">
+                    <span class="card-meta-btn">Downtown Skate Park</span>
+                  </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="contests" data-date="2025-12-10"tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-2">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/joakim-honkasalo-6D75PWzBkmQ-unsplash.jpg" alt="Winter Indoor Jam">
+              </div>
+              <div class="card-body">
+                <h3 id="title-2" class="card-title">Winter Indoor Jam</h3>
+                <div class="card-meta-header">
+                  <span class="card-pill">Contests</span>
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">6:00 PM</span>
+                  </div>
+                </div>
+                <div class="card-description">Escape the cold and join our indoor jam session. Fun, music, and skateboarding for everyone. Free entry! Enjoy live music, food trucks, and a welcoming atmosphere. Bring your friends and make new ones at this can't-miss event. <span class="read-more">Read more</span></div>
+                  <div class="card-meta-group">
+                    <span class="card-meta-btn">Indoor Skate Park</span>
+                  </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="contests" data-date="2025-04-20" tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-3">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/shashank-verma-86DFQ-7FLT0-unsplash.jpg" alt="Ramp Riot Challenge">
+              </div>
+              <div class="card-body">
+                <h3 id="title-3" class="card-title">Ramp Riot Challenge</h3>
+                <div class="card-meta-header">
+                  <span class="card-pill">Contests</span>
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">1:00 PM</span>
+                  </div>
+                </div>
+                <div class="card-description">Test your skills on the mega ramp! Open challenge for advanced skaters. Spectators welcome. Experience the thrill of high-flying tricks and fierce competition. Cheer on your favorite skaters and be part of the action. <span class="read-more">Read more</span></div>
+                  <div class="card-meta-group">
+                    <span class="card-meta-btn">Mega Ramp Park</span>
+                  </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="contests" data-date="2025-11-05" tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-4">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/shashank-verma-U2gp1MEx4O4-unsplash.jpg" alt="Street Series Finals">
+              </div>
+              <div class="card-body">
+                <h3 id="title-4" class="card-title">Street Series Finals</h3>
+                <div class="card-meta-header">
+                  <span class="card-pill">Contests</span>
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">11:00 AM</span>
+                  </div>
+                </div>
+                <div class="card-description">The best street skaters battle it out for the finals. Tricks, style, and big prizes await! Watch as top talent goes head-to-head in a showcase of creativity and skill. Don't miss the excitement and energy of the finals. <span class="read-more">Read more</span></div>
+                  <div class="card-meta-group">
+                    <span class="card-meta-btn">City Plaza</span>
+                  </div>
+              </div>
+            </a>
+          </article>
+
+          <!-- CLASSES (4) -->
+          <article class="card project-item" data-category="classes" data-day="Saturdays and Sundays" tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-5">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/jarod-wang-p1TUkdPpPbE-unsplash.jpg" alt="Beginner Skate Clinic">
+              </div>
+              <div class="card-body">
+                <h3 id="title-5" class="card-title">Beginner Skate Clinic</h3>
+                <div class="card-meta-header">
+                  <span class="card-pill">Classes</span>
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">10:00 AM - 12:00 PM</span>
+                  </div>
+                </div>
+                <div class="card-description">Learn the basics of skateboarding in a friendly, supportive environment. Boards and safety gear provided. Our experienced instructors will guide you every step of the way. Perfect for beginners and those looking to improve. <span class="read-more">Read more</span></div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Main Facility</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="classes" data-day="Every Sunday" tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-6">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/bp-miller-I-fKSsrXxr0-unsplash.jpg" alt="Advanced Tricks Workshop">
+              </div>
+              <div class="card-body">
+                <h3 id="title-6" class="card-title">Advanced Tricks Workshop</h3>
+                <div class="card-meta-header">
+                  <span class="card-pill">Classes</span>
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">2:00 PM - 4:00 PM</span>
+                  </div>
+                </div>
+                <div class="card-description">Push your skills further with advanced trick tips and hands-on coaching from local pros. Take your skateboarding to the next level with personalized instruction and practice. Meet other advanced skaters and share your passion. <span class="read-more">Read more</span></div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Main Facility</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="classes" data-day="Every Friday" tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-7">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/oxana-melis-siah3X-dw6s-unsplash.jpg" alt="Girls Skate Night">
+              </div>
+              <div class="card-body">
+                <h3 id="title-7" class="card-title">Girls Skate Night</h3>
+                <div class="card-meta-header">
+                  <span class="card-pill">Classes</span>
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">6:00 PM - 8:00 PM</span>
+                  </div>
+                </div>
+                <div class="card-description">A night for girls and women to skate, learn, and connect. All ages and skill levels welcome! Build confidence, make friends, and enjoy a supportive environment. Celebrate the spirit of skateboarding together. <span class="read-more">Read more</span></div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Community Center</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="classes" data-day="Tuesdays & Thursdays" tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-8">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/beer-vanhoutte-ZrydxZppMRA-unsplash.jpg" alt="Youth Development Program">
+              </div>
+              <div class="card-body">
+                <h3 id="title-8" class="card-title">Youth Development Program</h3>
+                <div class="card-meta-header">
+                  <span class="card-pill">Classes</span>
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">4:00 PM - 6:00 PM</span>
+                  </div>
+                </div>
+                <div class="card-description">A multi-week program focused on building skills, confidence, and community for young skaters. Activities include group lessons, games, and mentorship. Help your child grow as a skater and as a person. <span class="read-more">Read more</span></div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Main Facility</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <!-- CAMPS (2) -->
+          <article class="card project-item" data-category="camps" data-range="2025-11-03/2026-01-04" tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-9">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/zach-lezniewicz-mkqUabTd2s0-unsplash.jpg" alt="Summer Camp">
+              </div>
+              <div class="card-body">
+                <h3 id="title-9" class="card-title">Shred Lab Fall/Winter Break Camp</h3>
+                <div class="card-meta-header">
+                  <span class="card-pill">Camps</span>
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">9:00 AM - 1:00 PM</span>
+                  </div>
+                </div>
+                <div class="card-description">Join us for two weeks of skating, games, and fun. Daily lessons, contests, and special guests! Make new friends, learn new tricks, and enjoy summer to the fullest. Spots are limited, so sign up early! <span class="read-more">Read more</span></div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Main Facility</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="camps" data-range="2026-06-01/2026-08-31" tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-10">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/joakim-honkasalo-6D75PWzBkmQ-unsplash.jpg" alt="Fall Break Camp">
+              </div>
+              <div class="card-body">
+                <h3 id="title-10" class="card-title">Summer Break Camp</h3>
+                <div class="card-meta-header">
+                  <span class="card-pill">Camps</span>
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">9:00 AM - 3:00 PM</span>
+                  </div>
+                </div>
+                <div class="card-description">A week of skateboarding, crafts, and outdoor fun during fall break. All skill levels welcome. Enjoy themed days, group activities, and special workshops. Create lasting memories and improve your skills. <span class="read-more">Read more</span></div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Main Facility</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <!-- COMMUNITY (4) -->
+          <article class="card project-item" data-category="community" data-date="2025-09-10" tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-11">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/bp-miller-I-fKSsrXxr0-unsplash.jpg" alt="Park Clean-Up">
+              </div>
+              <div class="card-body">
+                <h3 id="title-11" class="card-title">Park Clean-Up & Jam</h3>
+                <div class="card-meta-header">
+                  <span class="card-pill">Community</span>
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">9:00 AM</span>
+                  </div>
+                </div>
+                <div class="card-description">Help us keep our park clean! Volunteer for the clean-up, then enjoy a free skate jam and refreshments. Connect with your community and make a positive impact. All volunteers receive a free t-shirt and snacks. <span class="read-more">Read more</span></div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Riverside Skate Park</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="community" data-day="Every Monday" tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-12">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/shashank-verma-86DFQ-7FLT0-unsplash.jpg" alt="Monday Night Meetup">
+              </div>
+              <div class="card-body">
+                <h3 id="title-12" class="card-title">Monday Night Meetup</h3>
+                <div class="card-meta-header">
+                  <span class="card-pill">Community</span>
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">4:00 PM - 6:00 PM</span>
+                  </div>
+                </div>
+                <div class="card-description">Weekly meetups for skaters of all ages. Make friends, learn new tricks, and hang out! Each week features a new theme, guest speakers, and group activities. Join us for fun and friendship. <span class="read-more">Read more</span></div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Indoor Skate Park</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="community" data-date="2025-09-26" tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-13">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/jarod-wang-p1TUkdPpPbE-unsplash.jpg" alt="Skate & Create">
+              </div>
+              <div class="card-body">
+                <h3 id="title-13" class="card-title">Skate & Create Workshop</h3>
+                <div class="card-meta-header">
+                  <span class="card-pill">Community</span>
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">10:00 AM - 2:00 PM</span>
+                  </div>
+                </div>
+                <div class="card-description">A creative workshop combining skateboarding and art. All supplies provided. Open to all! Express yourself through art and movement, and take home your own creations. No experience necessary. <span class="read-more">Read more</span></div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Community Center</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="community" data-day="Saturdays & Sundays" tabindex="0">
+            <a class="card-link" href="event-detail.html" aria-labelledby="title-14">
+                <div class="card-media">
+                <img class="card-img" src="assets/img/oxana-melis-siah3X-dw6s-unsplash.jpg" alt="Weekend Open Session">
+              </div>
+              <div class="card-body">
+                <h3 id="title-14" class="card-title">Weekend Open Session</h3>
+                <div class="card-meta-header">
+                  <span class="card-pill">Community</span>
+                  <div class="card-meta-info">
+                    <span class="card-date"></span>
+                    <span class="card-time">12:00 PM - 6:00 PM</span>
+                  </div>
+                </div>
+                <div class="card-description">Drop in for open skate sessions every weekend. No registration required—just show up and shred! Meet new people, try new tricks, and enjoy a relaxed, welcoming atmosphere. All ages and skill levels are invited. <span class="read-more">Read more</span></div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">City Skate Plaza</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small id="copyright"></small>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/theme.js" defer></script>
+  <script src="assets/js/events.js" defer></script> 
+  <script src="assets/js/filters.js" defer></script>
+  <script src="assets/js/animations.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

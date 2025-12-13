@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shred Lab — Services</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/components.css" />
+  <link rel="stylesheet" href="assets/css/theme.css" />
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Flip.min.js" defer></script>
+</head>
+<body class="theme-root" data-theme="light">
+  <!-- Header -->
+  <header class="site-header" role="banner">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="Shred Lab Home">
+        <img src="assets/img/shred-icon-blk.png" alt="Shred Lab" class="brand-logo">
+        Shred Lab
+      </a>
+      <div class="controls">
+        <nav class="global-nav" aria-label="Primary">
+          <a class="nav-link" href="index.html">Home</a>
+          <a class="nav-link" href="about.html">About</a>
+          <a class="nav-link" href="services.html">Services</a>
+          <a class="nav-link active" href="events.html">Events</a>
+          <a class="nav-link" href="#">Contact</a>
+        </nav>
+        <!-- Theme toggle (Day/Night) -->
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+          <svg id="icon-light" class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+          </svg>
+          <svg id="icon-dark" class="icon hidden" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+        <!-- Mobile menu toggle -->
+        <button id="mobileMenuToggle" class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <svg class="menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+          <svg class="close-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="site-main" id="main" role="main">
+    <div class="container">
+      <!-- Intro -->
+      <section class="section intro">
+        <h1 class="section-title">Services</h1>
+        <p class="section-lead">Professional skateboarding instruction, workshops, and event services.</p>
+      </section>
+      <!-- Filter bar (hidden until 10+ services) -->
+      <section class="section hidden" id="filterSection">
+        <div class="filter-bar" role="toolbar" aria-label="Service filters">
+          <div class="filter-inner">
+            <div class="filter-left">
+              <button class="filter-btn active" data-filter="all" aria-pressed="true">All</button>
+              <button class="filter-btn" data-filter="lessons" aria-pressed="false">Lessons</button>
+              <button class="filter-btn" data-filter="workshops" aria-pressed="false">Workshops</button>
+              <button class="filter-btn" data-filter="events" aria-pressed="false">Events</button>
+              <button class="filter-btn" data-filter="custom" aria-pressed="false">Custom</button>
+            </div>
+
+            <!-- Layout toggle -->
+            <button id="layoutToggle" class="layout-toggle" aria-label="Toggle list view">
+              <svg id="icon-grid" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"/>
+                <rect x="14" y="3" width="7" height="7"/>
+                <rect x="14" y="14" width="7" height="7"/>
+                <rect x="3" y="14" width="7" height="7"/>
+              </svg>
+              <svg id="icon-list" class="icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="8" y1="6" x2="21" y2="6"/>
+                <line x1="8" y1="12" x2="21" y2="12"/>
+                <line x1="8" y1="18" x2="21" y2="18"/>
+                <circle cx="4" cy="6" r="1" fill="currentColor"/>
+                <circle cx="4" cy="12" r="1" fill="currentColor"/>
+                <circle cx="4" cy="18" r="1" fill="currentColor"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services grid -->
+      <section class="section">
+        <div class="grid events-grid" id="servicesGrid">
+          <!-- LESSONS (3) - External links to Peek Pro -->
+          <article class="card project-item" data-category="lessons" tabindex="0">
+            <a class="card-link" href="https://johnfudala.peek.pro" target="_blank" rel="noopener noreferrer" aria-labelledby="title-1">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/jarod-wang-p1TUkdPpPbE-unsplash.jpg" alt="Private Lesson">
+              </div>
+              <div class="card-body">
+                <div class="card-meta-header">
+                  <span class="card-pill">Lessons</span>
+                </div>
+                <h3 id="title-1" class="card-title">Private Lesson</h3>
+                <div class="card-description">One-on-one personalized skateboarding instruction tailored to your skill level and goals. Perfect for beginners or experienced skaters looking to progress quickly with focused attention.</div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Custom Schedule</span>
+                  <span class="card-meta-btn">Starting at $75</span>
+                </div>
+              </div>
+            </a>
+          </article>
+          <article class="card project-item" data-category="lessons" tabindex="0">
+            <a class="card-link" href="https://johnfudala.peek.pro" target="_blank" rel="noopener noreferrer" aria-labelledby="title-2">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/bp-miller-I-fKSsrXxr0-unsplash.jpg" alt="Group Lesson">
+              </div>
+              <div class="card-body">
+                <div class="card-meta-header">
+                  <span class="card-pill">Lessons</span>
+                </div>
+                <h3 id="title-2" class="card-title">Group Lesson</h3>
+                <div class="card-description">Learn with friends! Small group instruction (max 6 people) that combines personalized coaching with the energy and motivation of skating with peers. Great for families or friend groups.</div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Custom Schedule</span>
+                  <span class="card-meta-btn">Starting at $50/person</span>
+                </div>
+              </div>
+            </a>
+          </article>
+          <article class="card project-item" data-category="lessons" tabindex="0">
+            <a class="card-link" href="https://johnfudala.peek.pro" target="_blank" rel="noopener noreferrer" aria-labelledby="title-3">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/oxana-melis-siah3X-dw6s-unsplash.jpg" alt="Classes">
+              </div>
+              <div class="card-body">
+                <div class="card-meta-header">
+                  <span class="card-pill">Lessons</span>
+                </div>
+                <h3 id="title-3" class="card-title">Classes</h3>
+                <div class="card-description">Ongoing scheduled classes for all skill levels. Join a community of skaters, build consistent skills, and progress in a structured, supportive environment. Perfect for regular weekly development.</div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Weekly Sessions</span>
+                  <span class="card-meta-btn">View Schedule</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="workshops" tabindex="0">
+            <a class="card-link" href="build-a-board.html" aria-labelledby="title-build-a-board">
+              <div class="card-media">
+                  <img class="card-img" src="assets/img/jarod-wang-p1TUkdPpPbE-unsplash.jpg" alt="Build a Board Workshop">
+              </div>
+              <div class="card-body">
+                <div class="card-meta-header">
+                  <span class="card-pill">Workshop</span>
+                </div>
+                <h3 id="title-build-a-board" class="card-title">Build-a-Board Workshop</h3>
+                <div class="card-description">Design, assemble, and customize your own skateboard deck with expert guidance. Perfect for a unique gift or personal project.</div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">2-3 Hours</span>
+                  <span class="card-meta-btn">All Materials Included</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="events" tabindex="0">
+            <a class="card-link" href="service-contest-services.html" aria-labelledby="title-6">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/shashank-verma-86DFQ-7FLT0-unsplash.jpg" alt="Contest & Event Services">
+              </div>
+              <div class="card-body">
+                <div class="card-meta-header">
+                  <span class="card-pill">Events</span>
+                </div>
+                <h3 id="title-6" class="card-title">Local Contest or Demo</h3>
+                <div class="card-description">Professional skateboard event production for shops, brands, municipalities, and organizations. Let us handle the details.</div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Professional Services</span>
+                  <span class="card-meta-btn">Custom Packages</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="custom" tabindex="0">
+            <a class="card-link" href="service-custom.html" aria-labelledby="title-7">
+              <div class="card-media">
+                <img class="card-img" src="assets/img/joakim-honkasalo-6D75PWzBkmQ-unsplash.jpg" alt="Custom Services">
+              </div>
+              <div class="card-body">
+                <div class="card-meta-header">
+                  <span class="card-pill">Custom</span>
+                </div>
+                <h3 id="title-7" class="card-title">Custom Services</h3>
+                <div class="card-description">Have a unique project or idea? We offer custom services including art workshops, improv sessions, special projects, and creative collaborations.</div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Flexible Format</span>
+                  <span class="card-meta-btn">All Ages</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="custom" tabindex="0">
+            <a class="card-link" href="pro-skate-event.html" aria-labelledby="title-skateboard-contest">
+              <div class="card-media">
+                  <img class="card-img" src="assets/img/brandon-erlinger-ford-2r-VECqtJxg-unsplash.jpg" alt="Skateboard Contest">
+              </div>
+              <div class="card-body">
+                <div class="card-meta-header">
+                  <span class="card-pill">Event</span>
+                </div>
+                <h3 id="title-build-a-board" class="card-title">Open/Pro Contest</h3>
+                <div class="card-description">End-to-end logistics, safety, and execution management for professional action sports contests and events.</div>
+                <div class="card-meta-group">
+                    <span class="card-meta-btn">Event Management</span>
+                    <span class="card-meta-btn">Staffing</span>
+                    <span class="card-meta-btn">Logistics</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+          <article class="card project-item" data-category="media" tabindex="0">
+            <a class="card-link" href="skateboard-contest.html" aria-labelledby="title-skateboard-contest">
+              <div class="card-media">
+                  <img class="card-img" src="assets/img/nemesia-production-eQSqgnrosoU-unsplash.jpg" alt="Skateboard Contest">
+              </div>
+              <div class="card-body">
+                <div class="card-meta-header">
+                  <span class="card-pill">Event</span>
+                </div>
+                <h3 id="title-build-a-board" class="card-title">Hype and Fulfillment</h3>
+                <div class="card-description">High-quality media production, digital marketing, and essential sponsor reporting. An ideal add-on package for any event.</div>
+                <div class="card-meta-group">
+                  <span class="card-meta-btn">Digital Marketing</span>
+                  <!-- Highlight Reel is breaking layout 
+                  <span class="card-meta-btn">Highlight Reels</span>
+                  -->
+                  <span class="card-meta-btn">Sponsor ROI</span>
+                </div>
+              </div>
+            </a>
+          </article>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small id="copyright"></small>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/js/theme.js" defer></script>
+  <script src="assets/js/filters.js" defer></script>
+  <script src="assets/js/animations.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

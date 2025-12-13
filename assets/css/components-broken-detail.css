@@ -1,0 +1,914 @@
+/* ============================================================================
+   components.css — Modular Component Library
+   ============================================================================
+   
+   A comprehensive set of reusable UI components for the Shred Lab website.
+   These components are used across multiple pages: home, services, events,
+   and detail pages.
+   
+   Organization:
+   1. HEROS - Large page-defining components
+   2. FILTER BAR & CONTROLS - Interactive filtering and layout controls
+   3. GRID SYSTEMS - Layout frameworks for cards and content
+   4. CARDS - Core content display components
+   5. DETAIL PAGE COMPONENTS - Specialized layouts for detail pages
+   6. UTILITY COMPONENTS - Reusable elements (schedule, embeds, CTAs)
+   7. FORMS - Form fields and validation components
+   
+   ============================================================================ */
+
+
+/* ============================================================================
+   1. HEROS
+   ============================================================================
+   
+   Large, visually prominent components typically used at the top of pages.
+   Heroes provide context and set the tone for page content.
+   
+   Usage: Home page, landing pages, feature sections
+   ============================================================================ */
+
+/* NOTE: Hero components to be added as needed for home page and landing pages */
+
+
+/* ============================================================================
+   2. FILTER BAR & CONTROLS
+   ============================================================================
+   
+   Interactive UI controls for filtering and changing the display of content.
+   Used on events and services pages to help users find relevant content.
+   
+   Components:
+   - .filter-bar: Container for filter controls
+   - .filter-btn: Individual filter buttons (All, Contests, Classes, etc.)
+   - .layout-toggle: Button to switch between grid and list views
+   
+   Dependencies: Requires filters.js for functionality
+   ============================================================================ */
+
+/* Filter Bar Container */
+.filter-bar { 
+  width: 100%; 
+  background: transparent; 
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+/* Inner wrapper for filter controls - creates horizontal layout */
+.filter-inner { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Left side container for filter buttons */
+.filter-left { 
+  display: flex; 
+  gap: 8px; 
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+/* Filter Buttons - Individual category filters */
+.filter-btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+/* Active and hover states for filter buttons */
+.filter-btn:hover,
+.filter-btn.active { 
+  color: var(--text); 
+  border-color: var(--text);
+}
+
+/* Layout Toggle Button - Switches between grid and list views */
+.layout-toggle {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  transition: transform 0.2s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.layout-toggle:hover { 
+  transform: translateY(-2px);
+}
+
+/* Icons inside layout toggle button */
+.layout-toggle .icon {
+  width: 18px;
+  height: 18px;
+  stroke: var(--text);
+}
+
+
+/* ============================================================================
+   3. GRID SYSTEMS
+   ============================================================================
+   
+   Layout frameworks that control how cards are arranged on the page.
+   Two primary views: Grid (multi-column) and List (horizontal card layout)
+   
+   Grid View (Default):
+   - 4 columns on large screens (>1200px)
+   - 3 columns on medium screens (900-1200px)
+   - 2 columns on tablets (768-900px)
+   - 1 column on mobile (<768px)
+   
+   List View:
+   - 2 columns on desktop
+   - 1 column on mobile
+   - Cards display horizontally (image left, content right)
+   
+   Usage: Events page, Services page
+   Dependencies: filters.js handles toggle functionality
+   ============================================================================ */
+
+/* Grid Layout - Default 4-up responsive grid */
+.grid.events-grid { 
+  display: grid; 
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 20px;
+}
+
+/* Medium-large screens: 3 columns */
+@media (max-width: 1200px) {
+  .grid.events-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Tablets: 2 columns */
+@media (max-width: 900px) {
+  .grid.events-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile: 1 column */
+@media (max-width: 768px) {
+  .grid.events-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* List View Layout - Horizontal card display */
+.events-grid.list-view {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* List view card structure - horizontal layout */
+.events-grid.list-view .card {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  align-items: stretch;
+  gap: 0;
+  height: auto;
+}
+
+/* List view image sizing - 16:9 aspect ratio */
+.events-grid.list-view .card-media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+/* List view content area */
+.events-grid.list-view .card-body {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: auto;
+}
+
+/* List view: 1 column on tablets */
+@media (max-width: 900px) {
+  .events-grid.list-view {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* List view: vertical cards on mobile */
+@media (max-width: 768px) {
+  .events-grid.list-view .card {
+    grid-template-columns: 1fr;
+  }
+  
+  .events-grid.list-view .card-media,
+  .events-grid.list-view .card-body {
+    width: 100%;
+  }
+  
+  .events-grid.list-view .card-media {
+    aspect-ratio: 16 / 9;
+  }
+  
+  .events-grid.list-view .card-body {
+    padding: 20px;
+  }
+}
+
+/* List View Typography Adjustments - Smaller text for compact layout */
+.events-grid.list-view .card-body .card-title {
+  font-size: 22px;
+  margin-bottom: 6px;
+}
+
+.events-grid.list-view .card-meta-info .card-date,
+.events-grid.list-view .card-meta-info .card-time,
+.events-grid.list-view .card-meta-info .card-datetime {
+  font-size: 14px; 
+  font-weight: 600; 
+}
+
+/* Tighter separator spacing in list view */
+.events-grid.list-view .card-meta-info .card-date::after {
+  margin: 0 6px; 
+}
+
+/* Revert to larger text on mobile for readability */
+@media (max-width: 768px) {
+  .events-grid.list-view .card-meta-info .card-date,
+  .events-grid.list-view .card-meta-info .card-time {
+    font-size: 15px;
+  }
+}
+
+
+/* ============================================================================
+   4. CARDS
+   ============================================================================
+   
+   Core content display components used throughout the site. Cards contain
+   an image, category pill, title, metadata, description, and action buttons.
+   
+   Structure:
+   - .card: Main container
+   - .card-link: Clickable wrapper (uses display: contents)
+   - .card-media: Image container
+   - .card-img: The actual image
+   - .card-pill: Category badge overlaid on image
+   - .card-body: Text content area
+   - .card-title: Main heading
+   - .card-meta-header: Container for metadata (pills, dates)
+   - .card-meta-info: Date and time display
+   - .card-description: Main body text
+   - .card-meta-group: Container for action buttons/tags
+   
+   Usage: Events page, Services page, Home page
+   Responsive: Adjusts layout and sizing across breakpoints
+   ============================================================================ */
+
+/* Card Base Structure */
+.card { 
+  display: flex; 
+  flex-direction: column; 
+  background: var(--card-bg); 
+  overflow: hidden; 
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+/* Card link wrapper - allows entire card to be clickable */
+.card-link {
+  display: contents;
+  color: inherit;
+  text-decoration: none;
+  height: 100%;
+}
+
+/* Card Media Container - Holds the main image */
+.card-media { 
+  position: relative; 
+  overflow: hidden; 
+}
+
+/* Grid view card structure */
+.grid.events-grid:not(.list-view) .card {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Grid view image sizing - 16:9 aspect ratio for all cards */
+.grid.events-grid:not(.list-view) .card-media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+/* Card Image - Main visual element */
+.card-img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  transform-origin: center center; 
+  transition: transform 0.6s cubic-bezier(0.2, 0.6, 0.2, 1);
+  will-change: transform; 
+  display: block; 
+}
+
+/* Card Category Pill - Badge overlaid on image */
+.card-pill {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  padding: 6px 14px;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  border-radius: 999px;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Card Body - Main text content area */
+.card-body { 
+  padding: 15px 20px;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: flex-start;
+  gap: 6px; 
+  flex: 1;
+}
+
+/* Card Title - Main heading */
+.card-title { 
+  margin: 0px !important; 
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 600; 
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+/* Card Meta Header - Container for category pill and date/time */
+.card-meta-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0px;
+}
+
+/* Card Meta Info - Date and time display */
+.card-meta-info {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+/* Date and time elements styling */
+.card-meta-info .card-date,
+.card-meta-info .card-time,
+.card-meta-info .card-datetime {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--text);
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+/* Pipe separator between date and time */
+.card-meta-info .card-date::after {
+  content: '|';
+  font-weight: 400;
+  color: var(--muted);
+  opacity: 0.6;
+  margin: 0 10px;
+}
+
+/* Generic separator (if needed) */
+.card-meta-info .card-separator {
+  padding: 0 8px;
+  color: var(--text);
+  opacity: 0.5;
+  font-weight: 400;
+}
+
+/* Card Description - Main body text with line clamping */
+.card-description {
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 420px;
+  line-height: 1.4;
+  position: relative;
+}
+
+/* Read more link within description */
+.card-description .read-more {
+  color: var(--accent, #007bff);
+  text-decoration: underline;
+  font-size: 15px;
+  cursor: pointer;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+/* Card Meta Group - Container for location/action buttons */
+.card-meta-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 8px;
+}
+
+/* Card Meta Buttons - Location and action tags (inverted style) */
+.card-meta-group .card-meta-btn {
+  border: 1px solid #000000;
+  background: #000000;
+  color: #ffffff;
+  padding: 6px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 0px;
+  margin-right: 10px;
+  margin-bottom: 0;
+}
+
+.card-meta-group .card-meta-btn:hover {
+  color: #ffffff;
+  border-color: #000000;
+  transform: none;
+}
+
+/* Generic Meta Button Styles - For other button uses */
+.card-meta-btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 20px;
+  margin-right: 8px;
+  margin-bottom: 4px;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  user-select: none;
+  display: inline-block;
+}
+
+.card-meta-btn:hover {
+  color: var(--text);
+  border-color: var(--text);
+  transform: translateY(-1px);
+}
+
+
+/* ============================================================================
+   5. DETAIL PAGE COMPONENTS
+   ============================================================================
+   
+   Specialized layouts for event and service detail pages. These components
+   provide structured content display for single items.
+   
+   Components:
+   - .detail-section: Main content sections
+   - .detail-grid: Two-column layout for organized content
+   - .detail-block: Individual content blocks within grid
+   - .detail-heading: Section headings
+   - .detail-list: Bulleted lists
+   - .detail-text: Body text
+   
+   Usage: event-detail.html, service-detail.html
+   ============================================================================ */
+
+/* Detail Section - Main content container */
+.detail-section {
+  padding: 60px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.detail-section:last-child {
+  border-bottom: none;
+}
+
+/* Detail Grid - Two-column layout for structured content */
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+}
+
+/* Single column on tablets and mobile */
+@media (max-width: 900px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* Detail Block - Individual content blocks */
+.detail-block {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Detail Heading - Section titles */
+.detail-heading {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* Detail List - Bulleted lists */
+.detail-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-list li {
+  font-size: 15px;
+  color: var(--text);
+  padding-left: 16px;
+  position: relative;
+}
+
+/* Custom bullet point */
+.detail-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--muted);
+}
+
+/* Detail Text - Body paragraphs */
+.detail-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0;
+}
+
+
+/* ============================================================================
+   6. UTILITY COMPONENTS
+   ============================================================================
+   
+   Reusable components that can be used across multiple pages and contexts.
+   These are standalone elements that serve specific purposes.
+   
+   Components:
+   - Schedule: Timeline display for events
+   - Embed Container: Wrapper for iframes and embedded content
+   - CTA Box: Call-to-action promotional boxes
+   
+   Usage: All pages as needed
+   ============================================================================ */
+
+/* --------------------------------------------------------------------------
+   SCHEDULE - Timeline component for event schedules
+   -------------------------------------------------------------------------- */
+.schedule {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.schedule-item {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.schedule-item:last-child {
+  border-bottom: none;
+}
+
+.schedule-time {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.schedule-event {
+  font-size: 15px;
+  color: var(--text);
+}
+
+/* Single column layout on mobile */
+@media (max-width: 768px) {
+  .schedule-item {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   EMBED CONTAINER - Wrapper for iframes and embedded content
+   -------------------------------------------------------------------------- */
+.embed-container {
+  width: 100%;
+  min-height: 500px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  overflow: hidden;
+  position: relative;
+}
+
+.embed-container iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  border: none;
+  display: block;
+}
+
+/* Placeholder shown before iframe loads */
+.embed-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+  padding: 40px;
+  text-align: center;
+}
+
+.placeholder-icon {
+  width: 64px;
+  height: 64px;
+  stroke: var(--muted);
+  opacity: 0.5;
+  margin-bottom: 16px;
+}
+
+.placeholder-text {
+  font-size: 16px;
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Hide placeholder when iframe is present */
+.embed-container:has(iframe) .embed-placeholder {
+  display: none;
+}
+
+/* Smaller height on mobile */
+@media (max-width: 768px) {
+  .embed-container {
+    min-height: 400px;
+  }
+  
+  .embed-container iframe {
+    min-height: 400px;
+  }
+  
+  .embed-placeholder {
+    min-height: 400px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   CTA BOX - Call-to-action promotional boxes
+   -------------------------------------------------------------------------- */
+.cta-box {
+  text-align: center;
+  padding: 60px 40px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+}
+
+.cta-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0 0 16px 0;
+}
+
+.cta-text {
+  font-size: 16px;
+  color: var(--muted);
+  margin: 0 0 32px 0;
+}
+
+/* CTA Button - Primary action button */
+.cta-button {
+  display: inline-block;
+  padding: 16px 48px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  background: #000000;
+  border: 2px solid #000000;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cta-button:hover {
+  background: transparent;
+  color: #000000;
+  transform: translateY(-2px);
+}
+
+/* Dark theme button styling */
+:root.theme-dark .cta-button {
+  color: #000000;
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+:root.theme-dark .cta-button:hover {
+  background: transparent;
+  color: #ffffff;
+}
+
+/* Smaller padding on mobile */
+@media (max-width: 768px) {
+  .cta-box {
+    padding: 40px 20px;
+  }
+  
+  .cta-title {
+    font-size: 24px;
+  }
+  
+  .cta-button {
+    padding: 14px 32px;
+    font-size: 14px;
+  }
+}
+
+
+/* ============================================================================
+   7. FORMS
+   ============================================================================
+   
+   Form components for contact forms, inquiry forms, and other user input.
+   Includes field styling, validation states, and submission feedback.
+   
+   Components:
+   - .inquiry-form: Main form container
+   - .form-field: Individual field wrapper
+   - .form-actions: Submit button container
+   - .form-message: Success/error message display
+   
+   Usage: contact.html, inquiry forms
+   Dependencies: Form submission handled by external service (e.g., Formspree)
+   ============================================================================ */
+
+/* Form Container */
+.inquiry-form {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Form Field Wrapper */
+.form-field {
+  margin-bottom: 24px;
+}
+
+/* Form Labels */
+.form-field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+/* Required field indicator */
+.form-field label .required {
+  color: #ff0000;
+}
+
+/* Form Inputs - Text, email, tel, number, date, select, textarea */
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="tel"],
+.form-field input[type="number"],
+.form-field input[type="date"],
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  transition: border-color 0.2s ease;
+}
+
+/* Custom dropdown arrow for select fields */
+.form-field #project_type {
+  padding-right: 56px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center;
+  background-size: 12px;
+}
+
+/* Focus states for form inputs */
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--text);
+}
+
+/* Textarea specific styling */
+.form-field textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Form Actions - Submit button container */
+.form-actions {
+  margin-top: 32px;
+  text-align: center;
+}
+
+/* Form Messages - Success and error feedback */
+.form-message {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.form-message .success-message {
+  color: var(--text);
+  font-size: 16px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+}
+
+.form-message .error-message {
+  color: #ff0000;
+  font-size: 16px;
+  padding: 16px;
+  border: 1px solid #ff0000;
+  background: var(--card-bg);
+}
+
+/* Mobile form adjustments */
+@media (max-width: 768px) {
+  .inquiry-form {
+    max-width: 100%;
+  }
+  
+  /* Prevents iOS zoom on input focus */
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    font-size: 16px;
+  }
+}
+
+
+/* ============================================================================
+   END OF components.css
+   ============================================================================ */

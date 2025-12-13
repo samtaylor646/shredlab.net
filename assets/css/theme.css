@@ -1,0 +1,66 @@
+/* theme.css – Reef-inspired theme variables for light and dark modes */
+
+/* DEFAULT LIGHT THEME */
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --muted: #666666;
+  --border: #e5e5e5;
+  --card-bg: #ffffff;
+}
+
+/* DARK THEME */
+:root.theme-dark {
+  --bg: #000000;
+  --text: #ffffff;
+  --muted: #999999;
+  --border: #2a2a2a;
+  --card-bg: #000000;
+}
+
+/* Apply theme colors to root element */
+.theme-root { 
+  background: var(--bg); 
+  color: var(--text); 
+  min-height: 100vh;
+}
+
+/* Logo filter for dark mode */
+:root.theme-dark .brand-logo {
+  filter: invert(1);
+}
+
+/* Pill styling for dark mode */
+:root.theme-dark .card-pill {
+  background: rgba(255, 255, 255, 0.9);
+  color: #000000;
+}
+
+/* Card meta buttons for dark mode */
+:root.theme-dark .card-meta-group .card-meta-btn {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+:root.theme-dark .card-meta-group .card-meta-btn:hover {
+  background: #ffffff;
+  color: #000000;
+  border-color: #ffffff;
+}
+
+/* Override for Project Type dropdown arrow color (DARK Theme) */
+:root.theme-dark .form-field #project_type {
+  /* Only change the background-image to use a WHITE stroke (%23ffffff) */
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* Ensure smooth transitions */
+body,
+.site-header,
+.card,
+.filter-btn,
+.layout-toggle,
+.theme-toggle {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}

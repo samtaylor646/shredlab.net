@@ -1,0 +1,1070 @@
+/* ============================================================================
+   components.css — heros, cards, grid, filter bar, reusable components
+   ============================================================================ */
+
+/* ============================================================================
+   FILTER BAR
+   ============================================================================ */
+.filter-bar { 
+  width: 100%; 
+  background: transparent; 
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.filter-inner { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.filter-left { 
+  display: flex; 
+  gap: 8px; 
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+/* Filter buttons */
+.filter-btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  user-select: none;
+}
+
+.filter-btn:hover,
+.filter-btn.active { 
+  color: var(--text); 
+  border-color: var(--text);
+}
+
+/* ============================================================================
+   LAYOUT TOGGLE BUTTON
+   ============================================================================ */
+.layout-toggle {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  transition: transform 0.2s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.layout-toggle:hover { 
+  transform: translateY(-2px);
+}
+
+.layout-toggle .icon {
+  width: 18px;
+  height: 18px;
+  stroke: var(--text);
+}
+
+/* ============================================================================
+   GRID LAYOUT (4-up default)
+   ============================================================================ */
+.grid.events-grid { 
+  display: grid; 
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 20px;
+}
+
+@media (max-width: 1200px) {
+  .grid.events-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .grid.events-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .grid.events-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================================
+   LIST VIEW LAYOUT (2-up)
+   ============================================================================ */
+.events-grid.list-view {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.events-grid.list-view .card {
+  display: grid;
+  grid-template-columns: 40% 60%;
+  align-items: stretch;
+  gap: 0;
+  height: auto;
+}
+
+.events-grid.list-view .card-media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.events-grid.list-view .card-body {
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: auto;
+}
+
+@media (max-width: 900px) {
+  .events-grid.list-view {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .events-grid.list-view .card {
+    grid-template-columns: 1fr;
+  }
+  
+  .events-grid.list-view .card-media,
+  .events-grid.list-view .card-body {
+    width: 100%;
+  }
+  
+  .events-grid.list-view .card-media {
+    aspect-ratio: 16 / 9;
+  }
+  
+  .events-grid.list-view .card-body {
+    padding: 20px;
+  }
+}
+
+
+
+/* ============================================================================
+   LIST VIEW OVERRIDES (Title and Date/Time)
+   ============================================================================ */
+
+/* 1. Smaller Title for List View */
+.events-grid.list-view .card-body .card-title {
+  font-size: 22px; /* Reduced from 28px for the list layout */
+  margin-bottom: 6px; /* Tighter spacing below the title */
+}
+
+/* 2. Smaller Date/Time to Prevent Wrapping */
+.events-grid.list-view .card-meta-info .card-date,
+.events-grid.list-view .card-meta-info .card-time,
+.events-grid.list-view .card-meta-info .card-datetime {
+  font-size: 14px; 
+  font-weight: 600; 
+}
+
+/* 3. Tighter Separator Pipe in List View */
+.events-grid.list-view .card-meta-info .card-date::after {
+  margin: 0 6px; 
+}
+
+@media (max-width: 768px) {
+  /* Revert date/time size on mobile for better readability, 
+     as mobile view is only 1 column and has plenty of space */
+  .events-grid.list-view .card-meta-info .card-date,
+  .events-grid.list-view .card-meta-info .card-time {
+    font-size: 15px; 
+  }
+}
+
+/* ============================================================================
+   CARD - BASE STRUCTURE
+   ============================================================================ */
+.card { 
+  display: flex; 
+  flex-direction: column; 
+  background: var(--card-bg); 
+  overflow: hidden; 
+  border: 1px solid var(--border);
+  position: relative;
+}
+
+.card-link {
+  display: contents;
+  color: inherit;
+  text-decoration: none;
+  height: 100%;
+}
+
+/* ============================================================================
+   CARD MEDIA (IMAGE CONTAINER)
+   ============================================================================ */
+.card-media { 
+  position: relative; 
+  overflow: hidden; 
+}
+
+/* Grid (default) card sizing: 1:1 aspect ratio for images */
+.grid.events-grid:not(.list-view) .card {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid.events-grid:not(.list-view) .card-media {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.card-img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: cover; 
+  transform-origin: center center; 
+  transition: transform 0.6s cubic-bezier(0.2, 0.6, 0.2, 1);
+  will-change: transform; 
+  display: block; 
+}
+
+/* ============================================================================
+   CARD CATEGORY PILL (positioned on image)
+   ============================================================================ */
+.card-pill {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  padding: 6px 14px;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  border-radius: 999px;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ============================================================================
+   CARD BODY (text content area)
+   ============================================================================ */
+.card-body { 
+  padding: 15px 20px;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: flex-start;
+  gap: 6px; 
+  flex: 1;
+}
+
+/* ============================================================================
+   CARD TITLE
+   ============================================================================ */
+.card-title { 
+  margin: 0px !important; 
+  font-size: 24px;
+  line-height: 1.2;
+  font-weight: 600; 
+  color: var(--text);
+  letter-spacing: -0.02em;
+}
+
+/* ============================================================================
+   CARD META HEADER (category pill + date/time info)
+   ============================================================================ */
+.card-meta-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0px;
+}
+
+/* ============================================================================
+   DATE & TIME INFO - UPDATED (more prominent, bold, no borders)
+   ============================================================================ */
+.card-meta-info {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.card-meta-info .card-date,
+.card-meta-info .card-time,
+.card-meta-info .card-datetime {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--text);
+  border: none;
+  background: transparent;
+  padding: 0;
+}
+
+/* Add pipe separator after date */
+.card-meta-info .card-date::after {
+  content: '|';
+  font-weight: 400;
+  color: var(--muted);
+  opacity: 0.6;
+  margin: 0 10px;
+}
+
+.card-meta-info .card-separator {
+  padding: 0 8px;
+  color: var(--text);
+  opacity: 0.5;
+  font-weight: 400;
+}
+
+/* Remove hover states from date/time */
+.card-meta-btn.card-date:hover,
+.card-meta-btn.card-time:hover,
+.card-meta-btn.card-datetime:hover {
+  color: var(--text);
+  border-color: transparent;
+  transform: none;
+}
+
+/* ============================================================================
+   CARD DESCRIPTION
+   ============================================================================ */
+.card-description {
+  font-size: 15px;
+  color: var(--text);
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 420px;
+  line-height: 1.4;
+  position: relative;
+}
+
+.card-description .read-more {
+  color: var(--accent, #007bff);
+  text-decoration: underline;
+  font-size: 15px;
+  cursor: pointer;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+
+/* ============================================================================
+   LOCATION PILL - UPDATED (tighter, bolder)
+   ============================================================================ */
+.card-meta-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 8px;
+}
+
+
+.card-meta-group .card-meta-btn {
+    border: 1px solid #000000;
+    background: #000000;
+    color: #ffffff;
+    padding: 4px 6px;
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 6px !important;
+    margin-right: 15px;
+    margin-bottom: 0;
+}
+
+/* Remove hover/transform from location pill */
+.card-meta-group .card-meta-btn:hover {
+  color: #ffffff;
+  border-color: #000000;
+  transform: none;
+}
+
+/* ============================================================================
+   GENERIC META BUTTON STYLES (for any other uses)
+   ============================================================================ */
+.card-meta-btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted);
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 20px;
+  margin-right: 8px;
+  margin-bottom: 4px;
+  transition: color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  user-select: none;
+  display: inline-block;
+}
+
+.card-meta-btn:hover,
+.card-meta-btn.active {
+  color: var(--text);
+  border-color: var(--text);
+}
+
+/* ============================================================================
+   CARD HOVER EFFECTS (desktop)
+   ============================================================================ */
+.card:hover .card-img { 
+  transform: scale(1.05);
+}
+
+.card:focus-within .card-img { 
+  transform: scale(1.04); 
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ============================================================================ */
+.card-link:focus { 
+  outline: 2px solid var(--border);
+  outline-offset: -4px; 
+}
+
+/* ============================================================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================================================ */
+@media (max-width: 768px) {
+  .card-media {
+    height: 300px;
+  }
+  
+  .card {
+    min-height: auto;
+  }
+}
+
+/* ============================================================================
+   MOBILE NAVIGATION
+   ============================================================================ */
+.mobile-menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  padding: 0;
+  margin-left: 0px;
+}
+
+.mobile-menu-toggle:hover {
+  transform: translateY(-2px);
+}
+
+.mobile-menu-toggle .menu-icon,
+.mobile-menu-toggle .close-icon {
+  width: 20px;
+  height: 20px;
+  stroke: var(--text);
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: flex;
+  }
+  
+  .global-nav {
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    gap: 0;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+    z-index: 99;
+  }
+  
+  .global-nav.mobile-open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  
+  .global-nav .nav-link {
+    display: block;
+    padding: 20px 40px;
+    border-bottom: 1px solid var(--border);
+    font-size: 16px;
+  }
+  
+  .global-nav .nav-link:last-child {
+    border-bottom: none;
+  }
+}
+
+/* ============================================================================
+   BACK NAVIGATION
+   ============================================================================ */
+.back-nav {
+  margin: 40px 0 20px 0;
+}
+
+.back-link {
+  padding:8px 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--text);
+  transform: translateX(-4px);
+}
+
+.back-icon {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+}
+
+/* ============================================================================
+   HERO IMAGE (reusable for any detail page)
+   ============================================================================ */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  margin-bottom: 40px;
+  border: 1px solid var(--border);
+}
+
+.hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 350px;
+  }
+}
+
+/* ============================================================================
+   PAGE HEADER (reusable header with title and meta info)
+   ============================================================================ */
+.page-header {
+  margin-bottom: 40px;
+}
+
+.page-title {
+  font-size: clamp(36px, 6vw, 64px);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin: 0;
+  /* margin: 0 0 32px 0; */
+}
+
+/* ============================================================================
+   META GRID (reusable info cards with icons)
+   ============================================================================ */
+.meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+}
+
+.meta-icon {
+  width: 24px;
+  height: 24px;
+  stroke: var(--text);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.meta-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.meta-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+
+.meta-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  .meta-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================================
+   CONTENT SECTIONS (reusable section layout)
+   ============================================================================ */
+.content-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.content-section {
+  padding: 24px 0 40px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.content-section:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.content-section-title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin:0 0 24px 0;
+  /* margin: 0 0 24px 0; */
+}
+
+.content-description {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text);
+}
+
+.content-description p {
+  margin: 0 0 20px 0;
+}
+
+.content-description p:last-child {
+  margin-bottom: 0;
+}
+
+
+/* ============================================================================
+   DETAILS GRID (reusable info grid with headings and lists)
+   ============================================================================ */
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 32px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.detail-heading {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.detail-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.detail-list li {
+  font-size: 15px;
+  color: var(--text);
+  padding-left: 16px;
+  position: relative;
+}
+
+.detail-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--muted);
+}
+
+.detail-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0;
+}
+
+/* ============================================================================
+   SCHEDULE (reusable schedule/timeline component)
+   ============================================================================ */
+.schedule {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.schedule-item {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 24px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.schedule-item:last-child {
+  border-bottom: none;
+}
+
+.schedule-time {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.schedule-event {
+  font-size: 15px;
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  .schedule-item {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
+/* ============================================================================
+   EMBED CONTAINER (for iframes and custom HTML)
+   ============================================================================ */
+.embed-container {
+  width: 100%;
+  min-height: 500px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  overflow: hidden;
+  position: relative;
+}
+
+.embed-container iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  border: none;
+  display: block;
+}
+
+.embed-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 500px;
+  padding: 40px;
+  text-align: center;
+}
+
+.placeholder-icon {
+  width: 64px;
+  height: 64px;
+  stroke: var(--muted);
+  opacity: 0.5;
+  margin-bottom: 16px;
+}
+
+.placeholder-text {
+  font-size: 16px;
+  color: var(--muted);
+  margin: 0;
+}
+
+.embed-container:has(iframe) .embed-placeholder {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .embed-container {
+    min-height: 400px;
+  }
+  
+  .embed-container iframe {
+    min-height: 400px;
+  }
+  
+  .embed-placeholder {
+    min-height: 400px;
+  }
+}
+
+/* ============================================================================
+   CTA BOX (reusable call-to-action component)
+   ============================================================================ */
+.cta-box {
+  text-align: center;
+  padding: 60px 40px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+}
+
+.cta-title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0 0 16px 0;
+}
+
+.cta-text {
+  font-size: 16px;
+  color: var(--muted);
+  margin: 0 0 32px 0;
+}
+
+.cta-button {
+  display: inline-block;
+  padding: 16px 48px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #ffffff;
+  background: #000000;
+  border: 2px solid #000000;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cta-button:hover {
+  background: transparent;
+  color: #000000;
+  transform: translateY(-2px);
+}
+
+:root.theme-dark .cta-button {
+  color: #000000;
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+:root.theme-dark .cta-button:hover {
+  background: transparent;
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .cta-box {
+    padding: 40px 20px;
+  }
+  
+  .cta-title {
+    font-size: 24px;
+  }
+  
+  .cta-button {
+    padding: 14px 32px;
+    font-size: 14px;
+  }
+}
+
+/* ============================================================================
+   FORM COMPONENTS
+   ============================================================================ */
+.inquiry-form {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.form-field {
+  margin-bottom: 24px;
+}
+
+.form-field label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.form-field label .required {
+  color: #ff0000;
+}
+
+.form-field input[type="text"],
+.form-field input[type="email"],
+.form-field input[type="tel"],
+.form-field input[type="number"],
+.form-field input[type="date"],
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: 12px 16px;
+  font-size: 15px;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  transition: border-color 0.2s ease;
+}
+
+/* Custom fix for the Project Type dropdown: Black Arrow and proper spacing */
+.form-field #project_type {
+  /* 1. Ensure enough spacing */
+  padding-right: 56px; 
+
+  /* 2. Re-apply custom arrow with BLACK stroke (from %23666666 to %23000000) */
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23000000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 16px center; /* Arrow position */
+  background-size: 12px;
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--text);
+}
+
+.form-field textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-actions {
+  margin-top: 32px;
+  text-align: center;
+}
+
+.form-message {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.form-message .success-message {
+  color: var(--text);
+  font-size: 16px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+}
+
+.form-message .error-message {
+  color: #ff0000;
+  font-size: 16px;
+  padding: 16px;
+  border: 1px solid #ff0000;
+  background: var(--card-bg);
+}
+
+@media (max-width: 768px) {
+  .inquiry-form {
+    max-width: 100%;
+  }
+  
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+}
+
+
+/* ============================================================================
+   LIST VIEW DATE FIX (to prevent wrapping)
+   ============================================================================ */
+
+/* Target date/time inside list view and reduce size */
+.events-grid.list-view .card-meta-info .card-date,
+.events-grid.list-view .card-meta-info .card-time,
+.events-grid.list-view .card-meta-info .card-datetime {
+  font-size: 14px; /* Reduced from 15px */
+  font-weight: 600; /* Slightly less bold helps too */
+}
+
+/* Also reduce the horizontal space around the pipe separator */
+.events-grid.list-view .card-meta-info .card-date::after {
+  margin: 0 6px; /* Reduced from 0 10px */
+}
+
+/* Optional: In mobile list view (1 column), text wrapping is fine, 
+   so you can revert the size back to 15px for readability if needed, 
+   but 14px should be acceptable across the board. */
+@media (max-width: 768px) {
+  .events-grid.list-view .card-meta-info .card-date,
+  .events-grid.list-view .card-meta-info .card-time {
+    font-size: 15px; /* Revert to default size on mobile */
+  }
+}
+
+
+
+
+
+/* ============================================================================
+   END OF components.css
+   ============================================================================ */
