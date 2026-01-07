@@ -6,6 +6,20 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Summer Shred Contest — Shred Lab Events</title>
 
+  <script>
+  // IMMEDIATE APPLICATION: Prevents FOUC by running before the CSS is processed
+  (function () {
+    try {
+      const savedTheme = localStorage.getItem('shredlab.theme');
+      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if ((savedTheme || systemTheme) === 'dark') {
+        document.documentElement.classList.add('theme-dark');
+      }
+    } catch (e) {}
+  })();
+</script>
+
+
   <!-- Styles -->
   <link rel="stylesheet" href="assets/css/base.css" />
   <link rel="stylesheet" href="assets/css/components.css" />

@@ -6,6 +6,25 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Shred Lab</title>
 
+  <script>
+    (function() {
+      // Critical: Check theme before page renders to prevent flash
+      try {
+        const saved = localStorage.getItem('shredlab.theme');
+        const system = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        // Apply dark mode if explicitly saved OR (not saved AND system is dark)
+        if (saved === 'dark' || (!saved && system)) {
+          document.documentElement.classList.add('theme-dark');
+        } else {
+          document.documentElement.classList.remove('theme-dark');
+        }
+      } catch (e) {
+        // Fail silently (e.g., if localStorage is disabled)
+      }
+    })();
+  </script>
+
   <!-- Styles -->
   <link rel="stylesheet" href="assets/css/base.css" />
   <link rel="stylesheet" href="assets/css/components.css" />
