@@ -1,4 +1,4 @@
-# Shred Lab
+# Shred Lab (work in progress)
 
 **Curated contests, classes, camps, and workshops.**
 
